@@ -402,7 +402,7 @@
 
         <div class="grid-2">
           <div>
-            <label>WhatsApp do Cliente *</label>
+            <label>Telefone / WhatsApp (Opcional)</label>
             <input type="tel" id="telefone" placeholder="(99) 99999-9999">
           </div>
           <div>
@@ -450,12 +450,12 @@
         <button id="btnGerar" class="btn btn-primario" onclick="salvarEGerar()">❄️ GERAR PROPOSTA & SALVAR</button>
       </div>
 
-      <!-- TELA DE SUCESSO COM ENVIO DIRETO NO WHATSAPP E OPÇÃO DE EDITAR -->
+      <!-- TELA DE SUCESSO COM ENVIO DIRETO PARA O WHATSAPP -->
       <div id="sucesso-container" class="card" style="display:none; text-align:center;">
         <h3 style="color:#34d399; font-size:18px;">✅ Proposta Pronta!</h3>
-        <p style="font-size:12px; color:var(--texto-secundario); margin-top:4px;">Envie a imagem pelo WhatsApp ou volte para ajustar algum valor.</p>
+        <p style="font-size:12px; color:var(--texto-secundario); margin-top:4px;">Toque abaixo para abrir o WhatsApp e escolher o contato.</p>
         <img id="preview-img" alt="Orçamento">
-        <button class="btn btn-whatsapp" onclick="compartilharOrcamento()">📲 ENVIAR PROPOSTA VIA WHATSAPP</button>
+        <button id="btnCompartilharZap" class="btn btn-whatsapp" onclick="compartilharOrcamento()">📲 ENVIAR NO WHATSAPP</button>
         <button class="btn btn-editar" onclick="voltarParaEdicaoAtual()">✏️ Editar este Orçamento</button>
         <button class="btn btn-secundario" onclick="resetarFormulario()">+ Novo Orçamento</button>
       </div>
@@ -514,6 +514,7 @@
   let filaOffline = JSON.parse(localStorage.getItem("souza_fila_offline") || "[]");
   let arquivoImagemGlobal = null;
   let urlBlobGlobal = null;
+  let base64ImagemGlobal = null;
   let idEmEdicao = null;
 
   function moeda(v) {
@@ -588,7 +589,6 @@
     if (reg.itensLista && reg.itensLista.length > 0) {
       reg.itensLista.forEach(item => adicionarLinha(item.desc, item.preco));
     } else if (reg.itens) {
-      // Fallback para registros antigos salvos apenas como texto
       const partes = reg.itens.split(", ");
       partes.forEach(p => {
         const match = p.match(/^(.*)\s+\(R\$\s*([\d.,]+)\)$/);
@@ -676,7 +676,7 @@
     const dataProxStr = dataProxObj.toLocaleDateString("pt-BR");
 
     const idFinal = idEmEdicao || ("OS-" + Date.now());
-    idEmEdicao = idFinal; // Mantém o ID caso o usuário clique em "Editar este Orçamento" na tela seguinte
+    idEmEdicao = idFinal;
 
     const registroAtualizado = {
       id: idFinal,
@@ -827,6 +827,7 @@
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         html2canvas(area.firstElementChild, { scale: 2, backgroundColor: "#ffffff" }).then(canvas => {
+          base64ImagemGlobal = canvas.toDataURL("image/jpeg", 0.92);
           canvas.toBlob(blob => {
             urlBlobGlobal = URL.createObjectURL(blob);
             arquivoImagemGlobal = new File([blob], "Proposta_Souza_Ar.jpg", { type: "image/jpeg" });
@@ -841,23 +842,59 @@
   }
 
   async function compartilharOrcamento() {
-    if (navigator.canShare && arquivoImagemGlobal && navigator.canShare({ files: [arquivoImagemGlobal] })) {
-      try {
+    const btnZap = document.getElementById("btnCompartilharZap");
+    btnZap.innerText = "⏳ ABRINDO WHATSAPP...";
+
+    try {
+      // 1. Modo Nativo APK Android (Capacitor Filesystem + Share) -> Abre escolha de contato direto com o arquivo anexado
+      if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Filesystem && window.Capacitor.Plugins.Share && base64ImagemGlobal) {
+        const base64Limpo = base64ImagemGlobal.split(",")[1];
+        const nomeArquivo = "Proposta_Souza_Ar_" + Date.now() + ".jpg";
+
+        const arquivoSalvo = await window.Capacitor.Plugins.Filesystem.writeFile({
+          path: nomeArquivo,
+          data: base64Limpo,
+          directory: "CACHE"
+        });
+
+        await window.Capacitor.Plugins.Share.share({
+          title: "Proposta Souza Ar & Refrigeração",
+          text: "Olá! Segue a proposta técnica da Souza Ar & Refrigeração.",
+          url: arquivoSalvo.uri,
+          dialogTitle: "Enviar proposta via WhatsApp"
+        });
+
+        btnZap.innerText = "📲 ENVIAR NO WHATSAPP";
+        return;
+      }
+
+      // 2. Modo Navegador Mobile (Web Share API)
+      if (navigator.canShare && arquivoImagemGlobal && navigator.canShare({ files: [arquivoImagemGlobal] })) {
         await navigator.share({
           files: [arquivoImagemGlobal],
           title: "Proposta Souza Ar & Refrigeração",
           text: "Olá! Segue a proposta técnica da Souza Ar & Refrigeração."
         });
+        btnZap.innerText = "📲 ENVIAR NO WHATSAPP";
         return;
-      } catch (e) {
-        if (e.name === "AbortError") return;
+      }
+    } catch (e) {
+      if (e && e.name === "AbortError") {
+        btnZap.innerText = "📲 ENVIAR NO WHATSAPP";
+        return;
       }
     }
+
+    // 3. Fallback: salva imagem e abre WhatsApp na lista de contatos
     const a = document.createElement("a");
     a.href = urlBlobGlobal;
     a.download = "Proposta_Souza_Ar.jpg";
     a.click();
-    alert("Imagem salva na galeria! Agora basta anexá-la na conversa do WhatsApp.");
+
+    setTimeout(() => {
+      window.location.href = "https://wa.me/?text=" + encodeURIComponent("Olá! Segue o orçamento da Souza Ar & Refrigeração.");
+      btnZap.innerText = "📲 ENVIAR NO WHATSAPP";
+    }, 500);
   }
 
   function resetarFormulario() {
@@ -926,7 +963,6 @@
 
     registrosGlobais.forEach(reg => {
       const precisaAviso = reg.situacao !== "CONCLUIDO" && reg.diasRestantes <= 15;
-      const numLimpo = String(reg.telefone || "").replace(/\D/g, "");
       const msgZap = encodeURIComponent(
         `Olá ${reg.cliente}! Aqui é da *Souza Ar & Refrigeração* ❄️.\n\n` +
         `Verificamos no nosso sistema que seu serviço de *${reg.tipo}* (${reg.equipamento}) realizado em *${reg.dataServico}* completou o período recomendado para *manutenção preventiva e higienização*.\n\n` +
@@ -949,7 +985,7 @@
               📅 Feito em: <b>${reg.dataServico}</b> | Revisão: <b>${reg.dataProxima}</b>
             </div>
             <div style="display:flex; gap:8px; margin-top:10px;">
-              <a href="https://wa.me/55${numLimpo}?text=${msgZap}" target="_blank" style="flex:2; text-decoration:none;">
+              <a href="https://wa.me/?text=${msgZap}" target="_blank" style="flex:2; text-decoration:none;">
                 <button class="btn btn-whatsapp btn-pequeno" style="width:100%;">📲 Lembrar no WhatsApp</button>
               </a>
               <button class="btn btn-secundario btn-pequeno" style="flex:1;" onclick="concluirAlerta('${reg.id}')">✓ Avisado</button>
