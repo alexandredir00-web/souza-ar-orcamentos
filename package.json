@@ -1,7 +1,7 @@
 {
-  "name": "souza-ar-orcamentos",
+  "name": "souza-ar-gestao",
   "version": "1.0.0",
-  "description": "Gerador de Orçamentos - Souza Ar & Refrigeração",
+  "description": "Sistema de Gestão, Orçamentos e Alertas - Souza Ar & Refrigeração",
   "main": "index.js",
   "scripts": {
     "build": "echo 'Build concluido'"
