@@ -3,498 +3,513 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <meta name="theme-color" content="#117b91">
-  <title>Souza Ar & Refrigeração</title>
+  <meta name="theme-color" content="#0f7c8d">
+  <title>Souza Ar - Gestão & Orçamentos</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    :root {
+      --primaria: #0f7c8d;
+      --secundaria: #1cc7b7;
+      --fundo: #f1f5f9;
+      --texto: #1e293b;
+      --alerta: #dc2626;
+      --aviso: #d97706;
+      --sucesso: #16a34a;
     }
 
-    body {
-      min-height: 100vh;
-      padding: 16px;
-      background: linear-gradient(135deg, #0f7c8d, #1cc7b7);
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
+
+    body { background: var(--fundo); color: var(--texto); padding-bottom: 85px; }
+
+    .topbar {
+      background: linear-gradient(135deg, var(--primaria), #0b5d6b);
+      color: #fff;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
     }
 
-    #tela-formulario,
-    .tela-sucesso {
-      max-width: 600px;
-      margin: auto;
-      background: #ffffff;
+    .topbar-brand { display: flex; align-items: center; gap: 10px; }
+    .topbar h1 { font-size: 18px; font-weight: 700; }
+    .topbar span { font-size: 11px; opacity: 0.85; display: block; }
+
+    .badge-sync {
+      font-size: 11px;
+      padding: 4px 10px;
       border-radius: 20px;
-      padding: 22px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+      background: rgba(255,255,255,0.2);
+      font-weight: 600;
     }
 
-    .app-header {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 20px;
-      padding-bottom: 15px;
-      border-bottom: 2px solid #f0f4f5;
-    }
+    .container { max-width: 650px; margin: 16px auto; padding: 0 14px; }
+    .aba { display: none; }
+    .aba.ativa { display: block; }
 
-    .app-header h1 {
-      color: #0f7c8d;
-      font-size: 22px;
-      line-height: 1.1;
-    }
-
-    .app-header p {
-      color: #666;
-      font-size: 12px;
-      margin-top: 3px;
-    }
-
-    .campo {
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 18px;
       margin-bottom: 14px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      border: 1px solid #e2e8f0;
     }
 
-    label {
-      display: block;
-      margin-bottom: 6px;
-      color: #0f7c8d;
-      font-weight: 700;
-      font-size: 13px;
-    }
-
-    input[type=text],
-    input[type=number],
-    input[type=tel] {
-      width: 100%;
-      padding: 13px;
-      border: 2px solid #e5e7eb;
-      border-radius: 12px;
+    .card-titulo {
       font-size: 15px;
-      transition: 0.2s;
-      background: #fafafa;
-    }
-
-    input:focus {
-      outline: none;
-      border-color: #0f7c8d;
-      background: #ffffff;
-      box-shadow: 0 0 0 4px rgba(15, 124, 141, 0.12);
-    }
-
-    .linha-item {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 10px;
-      align-items: center;
-    }
-
-    .desc { flex: 2.2; }
-    .preco { flex: 1; }
-
-    .btn-remover {
-      width: 44px;
-      height: 46px;
-      border: none;
-      border-radius: 12px;
-      background: #fee2e2;
-      color: #dc2626;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      flex-shrink: 0;
-    }
-
-    button {
-      border: none;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    button:active { transform: scale(0.98); }
-
-    .btn-adicionar {
-      width: 100%;
-      padding: 13px;
-      background: #e6f4f1;
-      color: #0f7c8d;
-      border: 2px dashed #0f7c8d;
-      border-radius: 12px;
-      font-weight: bold;
-      font-size: 14px;
-      margin-top: 6px;
-    }
-
-    .resumo-vivo {
-      margin-top: 16px;
-      padding: 12px 16px;
-      background: #f4f9fb;
-      border-radius: 12px;
+      font-weight: 700;
+      color: var(--primaria);
+      margin-bottom: 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      color: #0f7c8d;
-      font-weight: bold;
-      font-size: 15px;
     }
 
-    .btn-gerar {
-      width: 100%;
-      padding: 16px;
-      background: #0f7c8d;
-      color: #fff;
-      border-radius: 12px;
-      font-size: 16px;
-      font-weight: bold;
-      margin-top: 14px;
-      box-shadow: 0 8px 20px rgba(15, 124, 141, 0.3);
-    }
+    label { display: block; font-size: 12px; font-weight: 700; color: #475569; margin-bottom: 5px; margin-top: 10px; }
 
-    .btn-compartilhar {
+    input, select {
       width: 100%;
-      padding: 16px;
-      background: #25D366;
-      color: #fff;
-      border-radius: 12px;
-      font-size: 16px;
-      font-weight: bold;
-      margin-top: 15px;
-      box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
-    }
-
-    .btn-baixar {
-      width: 100%;
-      padding: 13px;
-      background: #f1f5f9;
-      color: #334155;
-      border-radius: 12px;
+      padding: 12px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 10px;
       font-size: 14px;
-      font-weight: bold;
-      margin-top: 10px;
+      background: #f8fafc;
     }
 
-    #preview-img {
-      width: 100%;
-      max-width: 360px;
-      border-radius: 12px;
-      margin-top: 15px;
-      border: 1px solid #ddd;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+    input:focus, select:focus { outline: none; border-color: var(--primaria); background: #fff; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    .linha-item { display: flex; gap: 8px; margin-top: 8px; align-items: center; }
+    .desc { flex: 2.3; }
+    .preco { flex: 1; }
+
+    .btn-del {
+      width: 42px; height: 42px; border: none; border-radius: 10px;
+      background: #fee2e2; color: var(--alerta); font-weight: bold; cursor: pointer;
     }
 
-    .tela-sucesso {
-      display: none;
-      text-align: center;
+    .btn {
+      width: 100%; padding: 14px; border: none; border-radius: 12px;
+      font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 12px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
     }
 
-    #area-render {
+    .btn-primario { background: var(--primaria); color: #fff; }
+    .btn-secundario { background: #e6f4f1; color: var(--primaria); border: 1.5px dashed var(--primaria); }
+    .btn-whatsapp { background: #25D366; color: #fff; }
+    .btn-pequeno { padding: 8px 12px; font-size: 12px; border-radius: 8px; width: auto; margin-top: 0; }
+
+    .item-registro {
+      background: #fff;
+      border-radius: 14px;
+      padding: 15px;
+      margin-bottom: 12px;
+      border-left: 5px solid var(--primaria);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .item-registro.atrasado { border-left-color: var(--alerta); }
+    .item-registro.proximo { border-left-color: var(--aviso); }
+    .item-registro.concluido { border-left-color: var(--sucesso); opacity: 0.75; }
+
+    .tag-status {
+      font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 6px;
+      text-transform: uppercase;
+    }
+    .tag-atrasado { background: #fee2e2; color: var(--alerta); }
+    .tag-proximo { background: #fef3c7; color: var(--aviso); }
+    .tag-emdia { background: #e0f2fe; color: #0284c7; }
+    .tag-concluido { background: #dcfce7; color: var(--sucesso); }
+
+    .bottom-nav {
       position: fixed;
-      left: -99999px;
-      top: 0;
-      background: #ffffff;
+      bottom: 0; left: 0; right: 0;
+      background: #fff;
+      display: flex;
+      border-top: 1px solid #e2e8f0;
+      padding: 8px 0;
+      z-index: 100;
+      box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
     }
+
+    .nav-btn {
+      flex: 1; background: none; border: none; color: #64748b;
+      font-size: 11px; font-weight: 600; display: flex; flex-direction: column;
+      align-items: center; gap: 4px; cursor: pointer; position: relative;
+    }
+
+    .nav-btn.ativo { color: var(--primaria); font-weight: 700; }
+    .nav-icon { font-size: 20px; }
+
+    .contador-alerta {
+      position: absolute; top: -2px; right: 28%;
+      background: var(--alerta); color: #fff; font-size: 10px;
+      padding: 1px 6px; border-radius: 10px; font-weight: bold;
+    }
+
+    #area-render { position: fixed; left: -99999px; top: 0; background: #fff; }
+    #preview-img { width: 100%; border-radius: 12px; border: 1px solid #cbd5e1; margin-top: 10px; }
   </style>
 </head>
 <body>
 
-<div id="tela-formulario">
-  <div class="app-header">
-    <!-- Mini ícone SVG no topo do App -->
-    <svg width="42" height="42" viewBox="0 0 300 300" style="overflow:visible; flex-shrink:0;">
-      <defs>
-        <linearGradient id="gradApp" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#19E0D0"/>
-          <stop offset="100%" stop-color="#007A74"/>
-        </linearGradient>
-      </defs>
-      <g fill="url(#gradApp)">
-        <rect x="130" y="0" width="40" height="55" rx="8"/>
-        <rect x="130" y="245" width="40" height="55" rx="8"/>
-        <rect x="0" y="130" width="55" height="40" rx="8"/>
-        <rect x="245" y="130" width="55" height="40" rx="8"/>
-        <g transform="rotate(45 150 150)">
+  <div class="topbar">
+    <div class="topbar-brand">
+      <svg width="34" height="34" viewBox="0 0 300 300" style="overflow:visible;">
+        <g fill="#ffffff">
           <rect x="130" y="0" width="40" height="55" rx="8"/>
           <rect x="130" y="245" width="40" height="55" rx="8"/>
+          <rect x="0" y="130" width="55" height="40" rx="8"/>
+          <rect x="245" y="130" width="55" height="40" rx="8"/>
+          <g transform="rotate(45 150 150)"><rect x="130" y="0" width="40" height="55" rx="8"/><rect x="130" y="245" width="40" height="55" rx="8"/></g>
+          <g transform="rotate(-45 150 150)"><rect x="130" y="0" width="40" height="55" rx="8"/><rect x="130" y="245" width="40" height="55" rx="8"/></g>
         </g>
-        <g transform="rotate(-45 150 150)">
-          <rect x="130" y="0" width="40" height="55" rx="8"/>
-          <rect x="130" y="245" width="40" height="55" rx="8"/>
-        </g>
-      </g>
-      <circle cx="150" cy="150" r="90" fill="none" stroke="url(#gradApp)" stroke-width="40"/>
-      <text x="150" y="182" text-anchor="middle" font-size="105" fill="#0F6D7E">❄</text>
-    </svg>
-    <div>
-      <h1>Souza Ar & Refrigeração</h1>
-      <p>Gerador Profissional de Orçamentos</p>
+        <circle cx="150" cy="150" r="90" fill="none" stroke="#ffffff" stroke-width="40"/>
+        <text x="150" y="182" text-anchor="middle" font-size="105" fill="#ffffff">❄</text>
+      </svg>
+      <div>
+        <h1>Souza Ar & Refrigeração</h1>
+        <span>Gestão de Serviços & Preventivas</span>
+      </div>
     </div>
+    <div id="status-rede" class="badge-sync">Online</div>
   </div>
 
-  <div class="campo">
-    <label>Nome do Cliente</label>
-    <input type="text" id="cliente" placeholder="Ex: João Silva">
-  </div>
+  <div class="container">
 
-  <div class="campo">
-    <label>WhatsApp do Cliente (Opcional)</label>
-    <input type="tel" id="telefone" placeholder="(99) 99999-9999">
-  </div>
+    <div id="aba-novo" class="aba ativa">
+      <div id="form-container" class="card">
+        <div class="card-titulo">
+          <span>📋 Novo Atendimento / Orçamento</span>
+        </div>
 
-  <label>Serviços / Peças</label>
-  <div id="container-itens">
-    <div class="linha-item">
-      <input class="desc" type="text" placeholder="Ex: Higienização completa">
-      <input class="preco" type="number" step="0.01" inputmode="decimal" placeholder="R$">
-      <button class="btn-remover" onclick="removerLinha(this)">✕</button>
+        <label>Nome do Cliente *</label>
+        <input type="text" id="cliente" placeholder="Ex: Carlos Eduardo">
+
+        <div class="grid-2">
+          <div>
+            <label>WhatsApp do Cliente *</label>
+            <input type="tel" id="telefone" placeholder="(99) 99999-9999">
+          </div>
+          <div>
+            <label>Lembrete Manutenção</label>
+            <select id="mesesRetorno">
+              <option value="6" selected>Daqui a 6 meses (Padrão)</option>
+              <option value="3">Daqui a 3 meses (Comercial)</option>
+              <option value="12">Daqui a 12 meses (Anual)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div>
+            <label>Tipo de Serviço</label>
+            <select id="tipoServico">
+              <option value="Instalação Ar Condicionado">Instalação</option>
+              <option value="Manutenção Preventiva">Manutenção Preventiva</option>
+              <option value="Limpeza e Higienização">Limpeza e Higienização</option>
+              <option value="Diagnóstico e Reparo">Diagnóstico e Reparo</option>
+            </select>
+          </div>
+          <div>
+            <label>Equipamento / BTUs</label>
+            <input type="text" id="equipamento" placeholder="Ex: Split 12.000 BTUs">
+          </div>
+        </div>
+
+        <label>Itens / Peças / Mão de Obra *</label>
+        <div id="container-itens">
+          <div class="linha-item">
+            <input class="desc" type="text" placeholder="Ex: Instalação completa com suporte">
+            <input class="preco" type="number" step="0.01" inputmode="decimal" placeholder="R$">
+            <button class="btn-del" onclick="removerLinha(this)">✕</button>
+          </div>
+        </div>
+
+        <button class="btn btn-secundario" onclick="adicionarLinha()">+ Adicionar Item</button>
+
+        <div style="margin-top:16px; padding:12px; background:#f8fafc; border-radius:10px; display:flex; justify-content:space-between; font-weight:bold; color:var(--primaria);">
+          <span>Valor Total:</span>
+          <span id="total-vivo">R$ 0,00</span>
+        </div>
+
+        <button id="btnGerar" class="btn btn-primario" onclick="salvarEGerar()">🚀 GERAR ORÇAMENTO & SALVAR HISTÓRICO</button>
+      </div>
+
+      <div id="sucesso-container" class="card" style="display:none; text-align:center;">
+        <h3 style="color:var(--sucesso);">✅ Registrado no Histórico!</h3>
+        <p style="font-size:12px; color:#64748b; margin-top:4px;">Alerta preventivo agendado automaticamente.</p>
+        <img id="preview-img" alt="Orçamento">
+        <button class="btn btn-whatsapp" onclick="compartilharOrcamento()">📲 ENVIAR ORÇAMENTO NO WHATSAPP</button>
+        <button class="btn btn-secundario" onclick="resetarFormulario()">+ Novo Atendimento</button>
+      </div>
     </div>
+
+    <div id="aba-alertas" class="aba">
+      <div class="card">
+        <div class="card-titulo">
+          <span>🔔 Clientes para Revisão (6 Meses)</span>
+          <button class="btn btn-secundario btn-pequeno" onclick="carregarDadosNuvem()">Atualizar</button>
+        </div>
+        <p style="font-size:12px; color:#64748b; margin-bottom:12px;">
+          Clientes que fizeram instalação ou limpeza e estão próximos ou passaram do prazo de manutenção preventiva.
+        </p>
+        <div id="lista-alertas">Carregando alertas...</div>
+      </div>
+    </div>
+
+    <div id="aba-historico" class="aba">
+      <div class="card">
+        <div class="card-titulo">
+          <span>📂 Histórico de Serviços</span>
+          <button class="btn btn-secundario btn-pequeno" onclick="carregarDadosNuvem()">Sincronizar</button>
+        </div>
+        <input type="text" id="busca-historico" placeholder="🔍 Buscar por cliente, aparelho ou serviço..." oninput="filtrarHistorico()">
+      </div>
+      <div id="lista-historico">Carregando histórico...</div>
+    </div>
+
   </div>
 
-  <button class="btn-adicionar" onclick="adicionarNovaLinha()">+ Adicionar Serviço ou Peça</button>
+  <div id="area-render"></div>
 
-  <div class="resumo-vivo">
-    <span>Total Estimado:</span>
-    <span id="total-vivo">R$ 0,00</span>
+  <div class="bottom-nav">
+    <button class="nav-btn ativo" onclick="mudarAba('novo', this)">
+      <span class="nav-icon">📝</span>
+      <span>Novo Serviço</span>
+    </button>
+    <button class="nav-btn" onclick="mudarAba('alertas', this)">
+      <span class="nav-icon">🔔</span>
+      <span id="badge-alertas" class="contador-alerta" style="display:none;">0</span>
+      <span>Alertas 6M</span>
+    </button>
+    <button class="nav-btn" onclick="mudarAba('historico', this)">
+      <span class="nav-icon">📂</span>
+      <span>Histórico</span>
+    </button>
   </div>
-
-  <button id="btnProcessar" class="btn-gerar" onclick="processarLocal()">🚀 GERAR ORÇAMENTO</button>
-</div>
-
-<div id="area-render"></div>
-
-<div id="tela-sucesso" class="tela-sucesso">
-  <h2 style="color:#0f7c8d; font-size:22px;">Orçamento Pronto!</h2>
-  <p style="color:#666; font-size:13px; margin-top:4px;">Confira a imagem abaixo antes de enviar</p>
-
-  <img id="preview-img" alt="Preview do Orçamento">
-
-  <button class="btn-compartilhar" onclick="compartilharImagem()">📲 ENVIAR NO WHATSAPP</button>
-  <button class="btn-baixar" onclick="baixarImagem()">💾 Salvar na Galeria</button>
-  <button class="btn-gerar" style="background:#64748b;" onclick="novoOrcamento()">Novo Orçamento</button>
-</div>
 
 <script>
+  const API_URL = "https://script.google.com/macros/s/AKfycbzMPvqQSuYIxuxgMLBG51btRcQJIbhZtX_-Vn5t9J31C17ZzZbhAuzIbT7cJocioao1/exec";
+
+  let registrosGlobais = JSON.parse(localStorage.getItem("souza_registros") || "[]");
+  let filaOffline = JSON.parse(localStorage.getItem("souza_fila_offline") || "[]");
   let arquivoImagemGlobal = null;
   let urlBlobGlobal = null;
 
-  function escaparHtml(texto) {
-    return String(texto || "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
+  function moeda(v) {
+    return "R$ " + Number(v || 0).toFixed(2).replace(".", ",");
   }
 
-  function moeda(valor) {
-    return "R$ " + Number(valor).toFixed(2).replace(".", ",");
+  function escaparHtml(t) {
+    return String(t || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
 
-  function atualizarTotalVivo() {
-    const precos = document.getElementsByClassName("preco");
-    let soma = 0;
-    for (let i = 0; i < precos.length; i++) {
-      soma += parseFloat(precos[i].value) || 0;
-    }
-    document.getElementById("total-vivo").innerText = moeda(soma);
+  function mudarAba(nome, btn) {
+    document.querySelectorAll(".aba").forEach(a => a.classList.remove("ativa"));
+    document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("ativo"));
+    document.getElementById("aba-" + nome).classList.add("ativa");
+    btn.classList.add("ativo");
+    if (nome !== "novo") renderizarListas();
   }
 
-  document.addEventListener("input", function(e) {
-    if (e.target.classList.contains("preco")) {
-      atualizarTotalVivo();
-    }
-  });
-
-  function adicionarNovaLinha() {
+  function adicionarLinha() {
     const div = document.createElement("div");
     div.className = "linha-item";
     div.innerHTML = `
-      <input class="desc" type="text" placeholder="Descrição do serviço">
+      <input class="desc" type="text" placeholder="Descrição do serviço/peça">
       <input class="preco" type="number" step="0.01" inputmode="decimal" placeholder="R$">
-      <button class="btn-remover" onclick="removerLinha(this)">✕</button>
+      <button class="btn-del" onclick="removerLinha(this)">✕</button>
     `;
     document.getElementById("container-itens").appendChild(div);
   }
 
   function removerLinha(btn) {
-    const container = document.getElementById("container-itens");
-    if (container.children.length <= 1) {
-      alert("Deixe pelo menos um item no orçamento.");
-      return;
+    const c = document.getElementById("container-itens");
+    if (c.children.length > 1) {
+      btn.parentElement.remove();
+      atualizarTotal();
     }
-    btn.parentElement.remove();
-    atualizarTotalVivo();
   }
 
-  function processarLocal() {
+  function atualizarTotal() {
+    let soma = 0;
+    document.querySelectorAll(".preco").forEach(p => soma += parseFloat(p.value) || 0);
+    document.getElementById("total-vivo").innerText = moeda(soma);
+  }
+
+  document.addEventListener("input", e => {
+    if (e.target.classList.contains("preco")) atualizarTotal();
+  });
+
+  async function salvarEGerar() {
     const cliente = document.getElementById("cliente").value.trim();
-    const btn = document.getElementById("btnProcessar");
+    const telefone = document.getElementById("telefone").value.trim();
+    const tipoServico = document.getElementById("tipoServico").value;
+    const equipamento = document.getElementById("equipamento").value.trim() || "Não especificado";
+    const mesesRetorno = parseInt(document.getElementById("mesesRetorno").value);
 
-    if (!cliente) {
-      alert("Por favor, preencha o nome do cliente.");
-      return;
-    }
+    if (!cliente) { alert("Informe o nome do cliente."); return; }
 
-    const descs = document.getElementsByClassName("desc");
-    const precos = document.getElementsByClassName("preco");
-    let linhas = "";
+    const descs = document.querySelectorAll(".desc");
+    const precos = document.querySelectorAll(".preco");
+    let linhasHtml = "";
+    let resumoTexto = [];
     let totalGeral = 0;
-    let count = 0;
+    let qtd = 0;
 
     for (let i = 0; i < descs.length; i++) {
-      const desc = descs[i].value.trim();
-      if (desc !== "") {
-        count++;
-        const preco = parseFloat(precos[i].value) || 0;
-        totalGeral += preco;
-
-        linhas += `
+      const d = descs[i].value.trim();
+      if (d) {
+        qtd++;
+        const p = parseFloat(precos[i].value) || 0;
+        totalGeral += p;
+        resumoTexto.push(d + " (" + moeda(p) + ")");
+        linhasHtml += `
           <tr>
-            <td style="border:1px solid #ddd; padding:10px; text-align:center;">${count}</td>
-            <td style="border:1px solid #ddd; padding:10px;">${escaparHtml(desc)}</td>
-            <td style="border:1px solid #ddd; padding:10px; text-align:center;">${moeda(preco)}</td>
+            <td style="border:1px solid #ddd; padding:10px; text-align:center;">${qtd}</td>
+            <td style="border:1px solid #ddd; padding:10px;">${escaparHtml(d)}</td>
+            <td style="border:1px solid #ddd; padding:10px; text-align:center;">${moeda(p)}</td>
             <td style="border:1px solid #ddd; padding:10px; text-align:center;">1</td>
-            <td style="border:1px solid #ddd; padding:10px; text-align:center; font-weight:bold;">${moeda(preco)}</td>
-          </tr>
-        `;
+            <td style="border:1px solid #ddd; padding:10px; text-align:center; font-weight:bold;">${moeda(p)}</td>
+          </tr>`;
       }
     }
 
-    if (count === 0) {
-      alert("Adicione pelo menos um serviço ou peça.");
-      return;
-    }
+    if (qtd === 0) { alert("Adicione pelo menos um item."); return; }
 
-    btn.innerText = "⏳ GERANDO IMAGEM...";
+    const btn = document.getElementById("btnGerar");
+    btn.innerText = "⏳ SALVANDO E GERANDO...";
     btn.disabled = true;
 
     const agora = new Date();
-    const dataTexto = agora.toLocaleDateString("pt-BR") + " " + agora.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+    const dataHoje = agora.toLocaleDateString("pt-BR");
+    const dataProxObj = new Date(agora);
+    dataProxObj.setMonth(dataProxObj.getMonth() + mesesRetorno);
+    const dataProxStr = dataProxObj.toLocaleDateString("pt-BR");
 
-    const logoOficialSvg = `
-      <div style="display:flex; align-items:center; gap:20px; font-family:Georgia,serif; text-align:left;">
-        <svg width="130" height="130" viewBox="0 0 300 300" style="overflow:visible;">
+    const novoRegistro = {
+      id: "OS-" + Date.now(),
+      dataServico: dataHoje,
+      cliente: cliente,
+      telefone: telefone,
+      tipo: tipoServico,
+      equipamento: equipamento,
+      itens: resumoTexto.join(", "),
+      valor: totalGeral,
+      dataProxima: dataProxStr,
+      diasRestantes: mesesRetorno * 30,
+      situacao: "EM DIA"
+    };
+
+    registrosGlobais.unshift(novoRegistro);
+    localStorage.setItem("souza_registros", JSON.stringify(registrosGlobais));
+
+    const payloadNuvem = {
+      acao: "salvarServico",
+      cliente: cliente,
+      telefone: telefone,
+      tipoServico: tipoServico,
+      equipamento: equipamento,
+      resumoItens: resumoTexto.join(", "),
+      valorTotal: totalGeral,
+      mesesRetorno: mesesRetorno
+    };
+
+    enviarParaNuvem(payloadNuvem);
+
+    const logoSvg = `
+      <div style="display:flex; align-items:center; gap:18px; font-family:Georgia,serif;">
+        <svg width="115" height="115" viewBox="0 0 300 300" style="overflow:visible;">
           <defs>
             <linearGradient id="gradDoc" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#19E0D0"/>
-              <stop offset="100%" stop-color="#007A74"/>
+              <stop offset="0%" stop-color="#19E0D0"/><stop offset="100%" stop-color="#007A74"/>
             </linearGradient>
           </defs>
           <g fill="url(#gradDoc)">
-            <rect x="130" y="0" width="40" height="55" rx="8"/>
-            <rect x="130" y="245" width="40" height="55" rx="8"/>
-            <rect x="0" y="130" width="55" height="40" rx="8"/>
-            <rect x="245" y="130" width="55" height="40" rx="8"/>
-            <g transform="rotate(45 150 150)">
-              <rect x="130" y="0" width="40" height="55" rx="8"/>
-              <rect x="130" y="245" width="40" height="55" rx="8"/>
-            </g>
-            <g transform="rotate(-45 150 150)">
-              <rect x="130" y="0" width="40" height="55" rx="8"/>
-              <rect x="130" y="245" width="40" height="55" rx="8"/>
-            </g>
+            <rect x="130" y="0" width="40" height="55" rx="8"/><rect x="130" y="245" width="40" height="55" rx="8"/>
+            <rect x="0" y="130" width="55" height="40" rx="8"/><rect x="245" y="130" width="55" height="40" rx="8"/>
+            <g transform="rotate(45 150 150)"><rect x="130" y="0" width="40" height="55" rx="8"/><rect x="130" y="245" width="40" height="55" rx="8"/></g>
+            <g transform="rotate(-45 150 150)"><rect x="130" y="0" width="40" height="55" rx="8"/><rect x="130" y="245" width="40" height="55" rx="8"/></g>
           </g>
           <circle cx="150" cy="150" r="90" fill="none" stroke="url(#gradDoc)" stroke-width="40"/>
           <text x="150" y="180" text-anchor="middle" font-size="100" fill="#0F6D7E">❄</text>
         </svg>
-
         <div>
-          <div style="color:#0f7c8d; font-size:42px; font-weight:700; line-height:0.9; letter-spacing:2px;">SOUZA</div>
-          <div style="color:#0f7c8d; font-size:13px; font-weight:600; letter-spacing:1px; margin-top:3px; white-space:nowrap;">AR & REFRIGERAÇÃO</div>
-          <div style="margin-top:5px; height:60px;">
-            <svg width="110" height="65" viewBox="0 0 220 120" style="overflow:visible;">
+          <div style="color:#0f7c8d; font-size:38px; font-weight:700; line-height:0.9; letter-spacing:2px;">SOUZA</div>
+          <div style="color:#0f7c8d; font-size:12px; font-weight:600; letter-spacing:1px; margin-top:3px;">AR & REFRIGERAÇÃO</div>
+          <div style="margin-top:5px; height:55px;">
+            <svg width="100" height="58" viewBox="0 0 220 120" style="overflow:visible;">
               <rect x="40" y="20" width="170" height="65" rx="12" fill="none" stroke="#0F7C8D" stroke-width="6"/>
               <rect x="90" y="18" width="70" height="15" rx="5" fill="none" stroke="#0F7C8D" stroke-width="6"/>
               <rect x="55" y="48" width="25" height="15" fill="none" stroke="#0F7C8D" stroke-width="5"/>
-              <circle cx="175" cy="55" r="4" fill="#0F7C8D"/>
-              <circle cx="190" cy="55" r="4" fill="#0F7C8D"/>
+              <circle cx="175" cy="55" r="4" fill="#0F7C8D"/><circle cx="190" cy="55" r="4" fill="#0F7C8D"/>
               <path d="M90 95 C80 110 100 120 90 135" fill="none" stroke="#0F7C8D" stroke-width="6" stroke-linecap="round"/>
               <path d="M125 95 C115 110 135 120 125 135" fill="none" stroke="#0F7C8D" stroke-width="6" stroke-linecap="round"/>
               <path d="M160 95 C150 110 170 120 160 135" fill="none" stroke="#0F7C8D" stroke-width="6" stroke-linecap="round"/>
             </svg>
           </div>
         </div>
-      </div>
-    `;
+      </div>`;
 
-    const htmlDocumento = `
+    const htmlDoc = `
       <div style="width:700px; background:#fff; font-family:Arial,sans-serif; color:#333; border:1px solid #e1e8ed;">
-        <div style="background:#ffffff; padding:30px 25px; border-bottom:3px solid #0f7c8d;">
-          <table width="100%" style="border-collapse:collapse; border:none;">
+        <div style="padding:28px 25px; border-bottom:3px solid #0f7c8d;">
+          <table width="100%" style="border-collapse:collapse;">
             <tr>
-              <td style="vertical-align:middle; border:none; padding:0;">
-                <div style="font-size:42px; font-weight:bold; color:#0f7c8d; letter-spacing:-1px;">ORÇAMENTO</div>
-                <div style="font-size:13px; color:#555555; margin-top:5px; max-width:280px; line-height:1.4;">
-                  Soluções ágeis e completas em climatização e refrigeração.
-                </div>
+              <td>
+                <div style="font-size:38px; font-weight:bold; color:#0f7c8d;">ORÇAMENTO</div>
+                <div style="font-size:13px; color:#555; margin-top:4px;">${escaparHtml(tipoServico)} • ${escaparHtml(equipamento)}</div>
               </td>
-              <td align="right" style="vertical-align:middle; border:none; padding:0; width:330px;">
-                ${logoOficialSvg}
-              </td>
+              <td align="right" style="width:310px;">${logoSvg}</td>
             </tr>
           </table>
         </div>
-
         <div style="padding:25px;">
-          <div style="background-color:#f8f9fa; border-left:4px solid #0f7c8d; padding:12px; margin-bottom:25px;">
-            <div style="font-size:14px; color:#222222; margin-bottom:4px;">Cliente: <b>${escaparHtml(cliente)}</b></div>
-            <div style="font-size:12px; color:#666;">Data de Emissão: <b>${dataTexto}</b></div>
+          <div style="background:#f8f9fa; border-left:4px solid #0f7c8d; padding:12px; margin-bottom:20px; font-size:13px;">
+            <div>Cliente: <b>${escaparHtml(cliente)}</b></div>
+            <div style="margin-top:4px; color:#555;">Data: <b>${dataHoje}</b> &nbsp;|&nbsp; Próxima Preventiva Recomendada: <b>${dataProxStr}</b></div>
           </div>
-
           <table width="100%" style="border-collapse:collapse; font-size:13px; margin-bottom:20px;">
             <thead>
-              <tr style="background:#0f7c8d; color:#fff; font-weight:bold; text-transform:uppercase;">
-                <th style="padding:12px; border:1px solid #0f7c8d;">Nº</th>
-                <th style="padding:12px; border:1px solid #0f7c8d; text-align:left;">Descrição dos Serviços / Peças</th>
-                <th style="padding:12px; border:1px solid #0f7c8d;">Valor</th>
-                <th style="padding:12px; border:1px solid #0f7c8d;">Qt.</th>
-                <th style="padding:12px; border:1px solid #0f7c8d;">Total</th>
+              <tr style="background:#0f7c8d; color:#fff;">
+                <th style="padding:10px;">Nº</th>
+                <th style="padding:10px; text-align:left;">Descrição</th>
+                <th style="padding:10px;">Valor</th>
+                <th style="padding:10px;">Qt.</th>
+                <th style="padding:10px;">Total</th>
               </tr>
             </thead>
-            <tbody>${linhas}</tbody>
+            <tbody>${linhasHtml}</tbody>
           </table>
-
-          <table width="100%" style="border-collapse:collapse; border:none;">
-            <tr>
-              <td style="border:none; width:50%;"></td>
-              <td style="border:2px solid #0f7c8d; font-size:24px; font-weight:bold; text-align:right; padding:12px; background-color:#f4f9fb; color:#0f7c8d; width:50%;">
-                TOTAL: ${moeda(totalGeral)}
-              </td>
-            </tr>
-          </table>
-
-          <div style="margin-top:40px; border-top:1px solid #ddd; padding-top:20px; font-size:12px; color:#444; line-height:1.8;">
-            <span style="font-size:15px; color:#0f7c8d; font-weight:bold;">SOUZA AR & REFRIGERAÇÃO</span>
-            <div style="margin-top:8px; color:#555;">
-              <b>Contato Técnico (WhatsApp):</b> (99) 98540-4018<br>
-              <b>Instagram Oficial:</b> @souzaar_refrigeracao
-            </div>
-            <div style="margin-top:15px; border-top:1px dashed #eee; padding-top:10px; color:#888; font-size:11px;">
-              Instalação • Manutenção Preventiva e Corretiva • Limpeza e Higienização • Diagnóstico e Reparo
-            </div>
+          <div style="text-align:right; font-size:22px; font-weight:bold; color:#0f7c8d; padding:12px; background:#f4f9fb; border:2px solid #0f7c8d; border-radius:6px;">
+            TOTAL: ${moeda(totalGeral)}
+          </div>
+          <div style="margin-top:30px; border-top:1px solid #ddd; padding-top:15px; font-size:12px; color:#555; line-height:1.7;">
+            <b style="color:#0f7c8d; font-size:14px;">SOUZA AR & REFRIGERAÇÃO</b><br>
+            Contato Técnico (WhatsApp): <b>(99) 98540-4018</b> &nbsp;|&nbsp; Instagram: <b>@souzaar_refrigeracao</b>
           </div>
         </div>
-      </div>
-    `;
+      </div>`;
 
     const area = document.getElementById("area-render");
-    area.innerHTML = htmlDocumento;
+    area.innerHTML = htmlDoc;
 
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        html2canvas(area.firstElementChild, {
-          scale: 2,
-          backgroundColor: "#ffffff",
-          logging: false
-        }).then(canvas => {
+        html2canvas(area.firstElementChild, { scale: 2, backgroundColor: "#fff" }).then(canvas => {
           canvas.toBlob(blob => {
             urlBlobGlobal = URL.createObjectURL(blob);
             arquivoImagemGlobal = new File([blob], "Orcamento_Souza_Ar.jpg", { type: "image/jpeg" });
-
             document.getElementById("preview-img").src = urlBlobGlobal;
-            document.getElementById("tela-formulario").style.display = "none";
-            document.getElementById("tela-sucesso").style.display = "block";
+            document.getElementById("form-container").style.display = "none";
+            document.getElementById("sucesso-container").style.display = "block";
             area.innerHTML = "";
           }, "image/jpeg", 0.92);
         });
@@ -502,40 +517,174 @@
     });
   }
 
-  async function compartilharImagem() {
+  async function compartilharOrcamento() {
     if (navigator.canShare && arquivoImagemGlobal && navigator.canShare({ files: [arquivoImagemGlobal] })) {
       try {
         await navigator.share({
           files: [arquivoImagemGlobal],
           title: "Orçamento Souza Ar & Refrigeração",
-          text: "Olá! Segue o seu orçamento da Souza Ar & Refrigeração."
+          text: "Olá! Segue o orçamento da Souza Ar & Refrigeração."
         });
         return;
-      } catch (e) {
-        if (e.name === "AbortError") return;
-      }
+      } catch (e) {}
     }
-    baixarImagem();
-    alert("Imagem salva! Agora basta anexá-la na conversa do WhatsApp.");
-  }
-
-  function baixarImagem() {
-    if (!urlBlobGlobal) return;
     const a = document.createElement("a");
     a.href = urlBlobGlobal;
     a.download = "Orcamento_Souza_Ar.jpg";
-    document.body.appendChild(a);
     a.click();
-    document.body.removeChild(a);
   }
 
-  function novoOrcamento() {
-    const btn = document.getElementById("btnProcessar");
-    btn.innerText = "🚀 GERAR ORÇAMENTO";
+  function resetarFormulario() {
+    document.getElementById("cliente").value = "";
+    document.getElementById("telefone").value = "";
+    document.getElementById("equipamento").value = "";
+    document.getElementById("container-itens").innerHTML = `
+      <div class="linha-item">
+        <input class="desc" type="text" placeholder="Descrição do serviço">
+        <input class="preco" type="number" step="0.01" inputmode="decimal" placeholder="R$">
+        <button class="btn-del" onclick="removerLinha(this)">✕</button>
+      </div>`;
+    atualizarTotal();
+    const btn = document.getElementById("btnGerar");
+    btn.innerText = "🚀 GERAR ORÇAMENTO & SALVAR HISTÓRICO";
     btn.disabled = false;
-    document.getElementById("tela-sucesso").style.display = "none";
-    document.getElementById("tela-formulario").style.display = "block";
+    document.getElementById("sucesso-container").style.display = "none";
+    document.getElementById("form-container").style.display = "block";
   }
+
+  async function enviarParaNuvem(payload) {
+    try {
+      await fetch(API_URL, {
+        method: "POST",
+        mode: "no-cors",
+        body: JSON.stringify(payload)
+      });
+    } catch (e) {
+      filaOffline.push(payload);
+      localStorage.setItem("souza_fila_offline", JSON.stringify(filaOffline));
+    }
+  }
+
+  async function sincronizarFilaOffline() {
+    if (filaOffline.length === 0) return;
+    const pendentes = [...filaOffline];
+    filaOffline = [];
+    localStorage.setItem("souza_fila_offline", "[]");
+    for (const item of pendentes) {
+      await enviarParaNuvem(item);
+    }
+  }
+
+  async function carregarDadosNuvem() {
+    await sincronizarFilaOffline();
+    try {
+      const resp = await fetch(API_URL + "?acao=listarTudo");
+      const json = await resp.json();
+      if (json.status === "ok") {
+        registrosGlobais = json.registros;
+        localStorage.setItem("souza_registros", JSON.stringify(registrosGlobais));
+        renderizarListas();
+      }
+    } catch (e) {
+      renderizarListas();
+    }
+  }
+
+  function renderizarListas() {
+    const divAlertas = document.getElementById("lista-alertas");
+    const divHist = document.getElementById("lista-historico");
+    const filtro = (document.getElementById("busca-historico").value || "").toLowerCase();
+
+    let htmlAlertas = "";
+    let htmlHist = "";
+    let qtdAlertas = 0;
+
+    registrosGlobais.forEach(reg => {
+      const precisaAviso = reg.situacao !== "CONCLUIDO" && reg.diasRestantes <= 15;
+      const numLimpo = String(reg.telefone || "").replace(/\D/g, "");
+      const msgZap = encodeURIComponent(
+        `Olá ${reg.cliente}! Aqui é da *Souza Ar & Refrigeração* ❄️.\n\n` +
+        `Verificamos no nosso sistema que seu serviço de *${reg.tipo}* (${reg.equipamento}) realizado em *${reg.dataServico}* completou o período recomendado para *manutenção preventiva e higienização*.\n\n` +
+        `Manter o aparelho limpo economiza energia e evita queima de peças. Podemos agendar uma visita técnica essa semana?`
+      );
+
+      if (precisaAviso) {
+        qtdAlertas++;
+        const classe = reg.diasRestantes < 0 ? "atrasado" : "proximo";
+        const tag = reg.diasRestantes < 0 ? "tag-atrasado" : "tag-proximo";
+
+        htmlAlertas += `
+          <div class="item-registro ${classe}">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <b>${escaparHtml(reg.cliente)}</b>
+              <span class="tag-status ${tag}">${reg.situacao}</span>
+            </div>
+            <div style="font-size:12px; color:#475569; margin:6px 0;">
+              🔧 ${escaparHtml(reg.tipo)} • ${escaparHtml(reg.equipamento)}<br>
+              📅 Feito em: <b>${reg.dataServico}</b> | Venceu/Vence: <b>${reg.dataProxima}</b>
+            </div>
+            <div style="display:flex; gap:8px; margin-top:10px;">
+              <a href="https://wa.me/55${numLimpo}?text=${msgZap}" target="_blank" style="flex:2; text-decoration:none;">
+                <button class="btn btn-whatsapp btn-pequeno" style="width:100%;">📲 Lembrar no WhatsApp</button>
+              </a>
+              <button class="btn btn-secundario btn-pequeno" style="flex:1;" onclick="concluirAlerta('${reg.id}')">✓ Já Avisei</button>
+            </div>
+          </div>`;
+      }
+
+      if (
+        reg.cliente.toLowerCase().includes(filtro) ||
+        reg.equipamento.toLowerCase().includes(filtro) ||
+        reg.tipo.toLowerCase().includes(filtro)
+      ) {
+        htmlHist += `
+          <div class="item-registro">
+            <div style="display:flex; justify-content:space-between;">
+              <b>${escaparHtml(reg.cliente)}</b>
+              <b style="color:var(--primaria);">${moeda(reg.valor)}</b>
+            </div>
+            <div style="font-size:12px; color:#475569; margin-top:5px;">
+              📅 <b>${reg.dataServico}</b> • ${escaparHtml(reg.tipo)} (${escaparHtml(reg.equipamento)})<br>
+              📝 ${escaparHtml(reg.itens)}<br>
+              🔔 Próxima preventiva: <b>${reg.dataProxima}</b>
+            </div>
+          </div>`;
+      }
+    });
+
+    const badge = document.getElementById("badge-alertas");
+    if (qtdAlertas > 0) {
+      badge.innerText = qtdAlertas;
+      badge.style.display = "inline-block";
+    } else {
+      badge.style.display = "none";
+    }
+
+    divAlertas.innerHTML = htmlAlertas || "<p style='text-align:center; color:#94a3b8; font-size:13px; padding:20px;'>Nenhum cliente com manutenção vencida no momento.</p>";
+    divHist.innerHTML = htmlHist || "<p style='text-align:center; color:#94a3b8; font-size:13px; padding:20px;'>Nenhum registro encontrado.</p>";
+  }
+
+  function filtrarHistorico() {
+    renderizarListas();
+  }
+
+  function concluirAlerta(id) {
+    registrosGlobais = registrosGlobais.map(r => r.id === id ? { ...r, situacao: "CONCLUIDO" } : r);
+    localStorage.setItem("souza_registros", JSON.stringify(registrosGlobais));
+    enviarParaNuvem({ acao: "marcarAvisado", id: id });
+    renderizarListas();
+  }
+
+  window.addEventListener("online", () => {
+    document.getElementById("status-rede").innerText = "Online";
+    carregarDadosNuvem();
+  });
+
+  window.addEventListener("offline", () => {
+    document.getElementById("status-rede").innerText = "Offline";
+  });
+
+  carregarDadosNuvem();
 </script>
 </body>
 </html>
