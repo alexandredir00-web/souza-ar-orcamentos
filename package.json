@@ -1,0 +1,16 @@
+{
+  "name": "souza-ar-orcamentos",
+  "version": "1.0.0",
+  "description": "Gerador de Orçamentos - Souza Ar & Refrigeração",
+  "main": "index.js",
+  "scripts": {
+    "build": "echo 'Build concluido'"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.0.0",
+    "@capacitor/cli": "^6.0.0",
+    "@capacitor/core": "^6.0.0",
+    "@capacitor/share": "^6.0.0",
+    "@capacitor/filesystem": "^6.0.0"
+  }
+}
