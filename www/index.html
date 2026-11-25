@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="theme-color" content="#117b91">
+  <title>Souza Ar & Refrigeração</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      padding: 16px;
+      background: linear-gradient(135deg, #0f7c8d, #1cc7b7);
+    }
+
+    #tela-formulario,
+    .tela-sucesso {
+      max-width: 600px;
+      margin: auto;
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+    }
+
+    .app-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #f0f4f5;
+    }
+
+    .app-header h1 {
+      color: #0f7c8d;
+      font-size: 22px;
+      line-height: 1.1;
+    }
+
+    .app-header p {
+      color: #666;
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    .campo {
+      margin-bottom: 14px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      color: #0f7c8d;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    input[type=text],
+    input[type=number],
+    input[type=tel] {
+      width: 100%;
+      padding: 13px;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      font-size: 15px;
+      transition: 0.2s;
+      background: #fafafa;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #0f7c8d;
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(15, 124, 141, 0.12);
+    }
+
+    .linha-item {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+      align-items: center;
+    }
+
+    .desc { flex: 2.2; }
+    .preco { flex: 1; }
+
+    .btn-remover {
+      width: 44px;
+      height: 46px;
+      border: none;
+      border-radius: 12px;
+      background: #fee2e2;
+      color: #dc2626;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    button {
+      border: none;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:active { transform: scale(0.98); }
+
+    .btn-adicionar {
+      width: 100%;
+      padding: 13px;
+      background: #e6f4f1;
+      color: #0f7c8d;
+      border: 2px dashed #0f7c8d;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 14px;
+      margin-top: 6px;
+    }
+
+    .resumo-vivo {
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: #f4f9fb;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #0f7c8d;
+      font-weight: bold;
+      font-size: 15px;
+    }
+
+    .btn-gerar {
+      width: 100%;
+      padding: 16px;
+      background: #0f7c8d;
+      color: #fff;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 14px;
+      box-shadow: 0 8px 20px rgba(15, 124, 141, 0.3);
+    }
+
+    .btn-compartilhar {
+      width: 100%;
+      padding: 16px;
+      background: #25D366;
+      color: #fff;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 15px;
+      box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
+    }
+
+    .btn-baixar {
+      width: 100%;
+      padding: 13px;
+      background: #f1f5f9;
+      color: #334155;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    #preview-img {
+      width: 100%;
+      max-width: 360px;
+      border-radius: 12px;
+      margin-top: 15px;
+      border: 1px solid #ddd;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+    }
+
+    .tela-sucesso {
+      display: none;
+      text-align: center;
+    }
+
+    #area-render {
+      position: fixed;
+      left: -99999px;
+      top: 0;
+      background: #ffffff;
+    }
+  </style>
+</head>
+<body>
+
+<div id="tela-formulario">
+  <div class="app-header">
+    <!-- Mini ícone SVG no topo do App -->
+    <svg width="42" height="42" viewBox="0 0 300 300" style="overflow:visible; flex-shrink:0;">
+      <defs>
+        <linearGradient id="gradApp" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#19E0D0"/>
+          <stop offset="100%" stop-color="#007A74"/>
+        </linearGradient>
+      </defs>
+      <g fill="url(#gradApp)">
+        <rect x="130" y="0" width="40" height="55" rx="8"/>
+        <rect x="130" y="245" width="40" height="55" rx="8"/>
+        <rect x="0" y="130" width="55" height="40" rx="8"/>
+        <rect x="245" y="130" width="55" height="40" rx="8"/>
+        <g transform="rotate(45 150 150)">
+          <rect x="130" y="0" width="40" height="55" rx="8"/>
+          <rect x="130" y="245" width="40" height="55" rx="8"/>
+        </g>
+        <g transform="rotate(-45 150 150)">
+          <rect x="130" y="0" width="40" height="55" rx="8"/>
+          <rect x="130" y="245" width="40" height="55" rx="8"/>
+        </g>
+      </g>
+      <circle cx="150" cy="150" r="90" fill="none" stroke="url(#gradApp)" stroke-width="40"/>
+      <text x="150" y="182" text-anchor="middle" font-size="105" fill="#0F6D7E">❄</text>
+    </svg>
+    <div>
+      <h1>Souza Ar & Refrigeração</h1>
+      <p>Gerador Profissional de Orçamentos</p>
+    </div>
+  </div>
+
+  <div class="campo">
+    <label>Nome do Cliente</label>
+    <input type="text" id="cliente" placeholder="Ex: João Silva">
+  </div>
+
+  <div class="campo">
+    <label>WhatsApp do Cliente (Opcional)</label>
+    <input type="tel" id="telefone" placeholder="(99) 99999-9999">
+  </div>
+
+  <label>Serviços / Peças</label>
+  <div id="container-itens">
+    <div class="linha-item">
+      <input class="desc" type="text" placeholder="Ex: Higienização completa">
+      <input class="preco" type="number" step="0.01" inputmode="decimal" placeholder="R$">
+      <button class="btn-remover" onclick="removerLinha(this)">✕</button>
+    </div>
+  </div>
+
+  <button class="btn-adicionar" onclick="adicionarNovaLinha()">+ Adicionar Serviço ou Peça</button>
+
+  <div class="resumo-vivo">
+    <span>Total Estimado:</span>
+    <span id="total-vivo">R$ 0,00</span>
+  </div>
+
+  <button id="btnProcessar" class="btn-gerar" onclick="processarLocal()">🚀 GERAR ORÇAMENTO</button>
+</div>
+
+<div id="area-render"></div>
+
+<div id="tela-sucesso" class="tela-sucesso">
+  <h2 style="color:#0f7c8d; font-size:22px;">Orçamento Pronto!</h2>
+  <p style="color:#666; font-size:13px; margin-top:4px;">Confira a imagem abaixo antes de enviar</p>
+
+  <img id="preview-img" alt="Preview do Orçamento">
+
+  <button class="btn-compartilhar" onclick="compartilharImagem()">📲 ENVIAR NO WHATSAPP</button>
+  <button class="btn-baixar" onclick="baixarImagem()">💾 Salvar na Galeria</button>
+  <button class="btn-gerar" style="background:#64748b;" onclick="novoOrcamento()">Novo Orçamento</button>
+</div>
+
+<script>
+  let arquivoImagemGlobal = null;
+  let urlBlobGlobal = null;
+
+  function escaparHtml(texto) {
+    return String(texto || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function moeda(valor) {
+    return "R$ " + Number(valor).toFixed(2).replace(".", ",");
+  }
+
+  function atualizarTotalVivo() {
+    const precos = document.getElementsByClassName("preco");
+    let soma = 0;
+    for (let i = 0; i < precos.length; i++) {
+      soma += parseFloat(precos[i].value) || 0;
+    }
+    document.getElementById("total-vivo").innerText = moeda(soma);
+  }
+
+  document.addEventListener("input", function(e) {
+    if (e.target.classList.contains("preco")) {
+      atualizarTotalVivo();
+    }
+  });
+
+  function adicionarNovaLinha() {
+    const div = document.createElement("div");
+    div.className = "linha-item";
+    div.innerHTML = `
+      <input class="desc" type="text" placeholder="Descrição do serviço">
+      <input class="preco" type="number" step="0.01" inputmode="decimal" placeholder="R$">
+      <button class="btn-remover" onclick="removerLinha(this)">✕</button>
+    `;
+    document.getElementById("container-itens").appendChild(div);
+  }
+
+  function removerLinha(btn) {
+    const container = document.getElementById("container-itens");
+    if (container.children.length <= 1) {
+      alert("Deixe pelo menos um item no orçamento.");
+      return;
+    }
+    btn.parentElement.remove();
+    atualizarTotalVivo();
+  }
+
+  function processarLocal() {
+    const cliente = document.getElementById("cliente").value.trim();
+    const btn = document.getElementById("btnProcessar");
+
+    if (!cliente) {
+      alert("Por favor, preencha o nome do cliente.");
+      return;
+    }
+
+    const descs = document.getElementsByClassName("desc");
+    const precos = document.getElementsByClassName("preco");
+    let linhas = "";
+    let totalGeral = 0;
+    let count = 0;
+
+    for (let i = 0; i < descs.length; i++) {
+      const desc = descs[i].value.trim();
+      if (desc !== "") {
+        count++;
+        const preco = parseFloat(precos[i].value) || 0;
+        totalGeral += preco;
+
+        linhas += `
+          <tr>
+            <td style="border:1px solid #ddd; padding:10px; text-align:center;">${count}</td>
+            <td style="border:1px solid #ddd; padding:10px;">${escaparHtml(desc)}</td>
+            <td style="border:1px solid #ddd; padding:10px; text-align:center;">${moeda(preco)}</td>
+            <td style="border:1px solid #ddd; padding:10px; text-align:center;">1</td>
+            <td style="border:1px solid #ddd; padding:10px; text-align:center; font-weight:bold;">${moeda(preco)}</td>
+          </tr>
+        `;
+      }
+    }
+
+    if (count === 0) {
+      alert("Adicione pelo menos um serviço ou peça.");
+      return;
+    }
+
+    btn.innerText = "⏳ GERANDO IMAGEM...";
+    btn.disabled = true;
+
+    const agora = new Date();
+    const dataTexto = agora.toLocaleDateString("pt-BR") + " " + agora.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+
+    const logoOficialSvg = `
+      <div style="display:flex; align-items:center; gap:20px; font-family:Georgia,serif; text-align:left;">
+        <svg width="130" height="130" viewBox="0 0 300 300" style="overflow:visible;">
+          <defs>
+            <linearGradient id="gradDoc" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#19E0D0"/>
+              <stop offset="100%" stop-color="#007A74"/>
+            </linearGradient>
+          </defs>
+          <g fill="url(#gradDoc)">
+            <rect x="130" y="0" width="40" height="55" rx="8"/>
+            <rect x="130" y="245" width="40" height="55" rx="8"/>
+            <rect x="0" y="130" width="55" height="40" rx="8"/>
+            <rect x="245" y="130" width="55" height="40" rx="8"/>
+            <g transform="rotate(45 150 150)">
+              <rect x="130" y="0" width="40" height="55" rx="8"/>
+              <rect x="130" y="245" width="40" height="55" rx="8"/>
+            </g>
+            <g transform="rotate(-45 150 150)">
+              <rect x="130" y="0" width="40" height="55" rx="8"/>
+              <rect x="130" y="245" width="40" height="55" rx="8"/>
+            </g>
+          </g>
+          <circle cx="150" cy="150" r="90" fill="none" stroke="url(#gradDoc)" stroke-width="40"/>
+          <text x="150" y="180" text-anchor="middle" font-size="100" fill="#0F6D7E">❄</text>
+        </svg>
+
+        <div>
+          <div style="color:#0f7c8d; font-size:42px; font-weight:700; line-height:0.9; letter-spacing:2px;">SOUZA</div>
+          <div style="color:#0f7c8d; font-size:13px; font-weight:600; letter-spacing:1px; margin-top:3px; white-space:nowrap;">AR & REFRIGERAÇÃO</div>
+          <div style="margin-top:5px; height:60px;">
+            <svg width="110" height="65" viewBox="0 0 220 120" style="overflow:visible;">
+              <rect x="40" y="20" width="170" height="65" rx="12" fill="none" stroke="#0F7C8D" stroke-width="6"/>
+              <rect x="90" y="18" width="70" height="15" rx="5" fill="none" stroke="#0F7C8D" stroke-width="6"/>
+              <rect x="55" y="48" width="25" height="15" fill="none" stroke="#0F7C8D" stroke-width="5"/>
+              <circle cx="175" cy="55" r="4" fill="#0F7C8D"/>
+              <circle cx="190" cy="55" r="4" fill="#0F7C8D"/>
+              <path d="M90 95 C80 110 100 120 90 135" fill="none" stroke="#0F7C8D" stroke-width="6" stroke-linecap="round"/>
+              <path d="M125 95 C115 110 135 120 125 135" fill="none" stroke="#0F7C8D" stroke-width="6" stroke-linecap="round"/>
+              <path d="M160 95 C150 110 170 120 160 135" fill="none" stroke="#0F7C8D" stroke-width="6" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const htmlDocumento = `
+      <div style="width:700px; background:#fff; font-family:Arial,sans-serif; color:#333; border:1px solid #e1e8ed;">
+        <div style="background:#ffffff; padding:30px 25px; border-bottom:3px solid #0f7c8d;">
+          <table width="100%" style="border-collapse:collapse; border:none;">
+            <tr>
+              <td style="vertical-align:middle; border:none; padding:0;">
+                <div style="font-size:42px; font-weight:bold; color:#0f7c8d; letter-spacing:-1px;">ORÇAMENTO</div>
+                <div style="font-size:13px; color:#555555; margin-top:5px; max-width:280px; line-height:1.4;">
+                  Soluções ágeis e completas em climatização e refrigeração.
+                </div>
+              </td>
+              <td align="right" style="vertical-align:middle; border:none; padding:0; width:330px;">
+                ${logoOficialSvg}
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <div style="padding:25px;">
+          <div style="background-color:#f8f9fa; border-left:4px solid #0f7c8d; padding:12px; margin-bottom:25px;">
+            <div style="font-size:14px; color:#222222; margin-bottom:4px;">Cliente: <b>${escaparHtml(cliente)}</b></div>
+            <div style="font-size:12px; color:#666;">Data de Emissão: <b>${dataTexto}</b></div>
+          </div>
+
+          <table width="100%" style="border-collapse:collapse; font-size:13px; margin-bottom:20px;">
+            <thead>
+              <tr style="background:#0f7c8d; color:#fff; font-weight:bold; text-transform:uppercase;">
+                <th style="padding:12px; border:1px solid #0f7c8d;">Nº</th>
+                <th style="padding:12px; border:1px solid #0f7c8d; text-align:left;">Descrição dos Serviços / Peças</th>
+                <th style="padding:12px; border:1px solid #0f7c8d;">Valor</th>
+                <th style="padding:12px; border:1px solid #0f7c8d;">Qt.</th>
+                <th style="padding:12px; border:1px solid #0f7c8d;">Total</th>
+              </tr>
+            </thead>
+            <tbody>${linhas}</tbody>
+          </table>
+
+          <table width="100%" style="border-collapse:collapse; border:none;">
+            <tr>
+              <td style="border:none; width:50%;"></td>
+              <td style="border:2px solid #0f7c8d; font-size:24px; font-weight:bold; text-align:right; padding:12px; background-color:#f4f9fb; color:#0f7c8d; width:50%;">
+                TOTAL: ${moeda(totalGeral)}
+              </td>
+            </tr>
+          </table>
+
+          <div style="margin-top:40px; border-top:1px solid #ddd; padding-top:20px; font-size:12px; color:#444; line-height:1.8;">
+            <span style="font-size:15px; color:#0f7c8d; font-weight:bold;">SOUZA AR & REFRIGERAÇÃO</span>
+            <div style="margin-top:8px; color:#555;">
+              <b>Contato Técnico (WhatsApp):</b> (99) 98540-4018<br>
+              <b>Instagram Oficial:</b> @souzaar_refrigeracao
+            </div>
+            <div style="margin-top:15px; border-top:1px dashed #eee; padding-top:10px; color:#888; font-size:11px;">
+              Instalação • Manutenção Preventiva e Corretiva • Limpeza e Higienização • Diagnóstico e Reparo
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const area = document.getElementById("area-render");
+    area.innerHTML = htmlDocumento;
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        html2canvas(area.firstElementChild, {
+          scale: 2,
+          backgroundColor: "#ffffff",
+          logging: false
+        }).then(canvas => {
+          canvas.toBlob(blob => {
+            urlBlobGlobal = URL.createObjectURL(blob);
+            arquivoImagemGlobal = new File([blob], "Orcamento_Souza_Ar.jpg", { type: "image/jpeg" });
+
+            document.getElementById("preview-img").src = urlBlobGlobal;
+            document.getElementById("tela-formulario").style.display = "none";
+            document.getElementById("tela-sucesso").style.display = "block";
+            area.innerHTML = "";
+          }, "image/jpeg", 0.92);
+        });
+      });
+    });
+  }
+
+  async function compartilharImagem() {
+    if (navigator.canShare && arquivoImagemGlobal && navigator.canShare({ files: [arquivoImagemGlobal] })) {
+      try {
+        await navigator.share({
+          files: [arquivoImagemGlobal],
+          title: "Orçamento Souza Ar & Refrigeração",
+          text: "Olá! Segue o seu orçamento da Souza Ar & Refrigeração."
+        });
+        return;
+      } catch (e) {
+        if (e.name === "AbortError") return;
+      }
+    }
+    baixarImagem();
+    alert("Imagem salva! Agora basta anexá-la na conversa do WhatsApp.");
+  }
+
+  function baixarImagem() {
+    if (!urlBlobGlobal) return;
+    const a = document.createElement("a");
+    a.href = urlBlobGlobal;
+    a.download = "Orcamento_Souza_Ar.jpg";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+
+  function novoOrcamento() {
+    const btn = document.getElementById("btnProcessar");
+    btn.innerText = "🚀 GERAR ORÇAMENTO";
+    btn.disabled = false;
+    document.getElementById("tela-sucesso").style.display = "none";
+    document.getElementById("tela-formulario").style.display = "block";
+  }
+</script>
+</body>
+</html>
