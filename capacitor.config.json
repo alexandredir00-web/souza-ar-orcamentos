@@ -1,0 +1,9 @@
+{
+  "appId": "br.com.souzaar.orcamentos",
+  "appName": "Souza Ar Orçamentos",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "android": {
+    "backgroundColor": "#117b91"
+  }
+}
