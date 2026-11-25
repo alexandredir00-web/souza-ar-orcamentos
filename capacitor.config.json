@@ -3,7 +3,12 @@
   "appName": "Souza Ar Gestão",
   "webDir": "www",
   "bundledWebRuntime": false,
+  "server": {
+    "url": "https://alexandredir00-web.github.io/souza-ar-orcamentos/www/",
+    "cleartext": true
+  },
   "android": {
-    "backgroundColor": "#0f7c8d"
+    "backgroundColor": "#091e28",
+    "allowMixedContent": true
   }
 }
