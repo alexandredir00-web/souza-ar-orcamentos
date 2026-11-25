@@ -35,7 +35,6 @@
       padding-bottom: 90px;
     }
 
-    /* BANNER HERO COM ILUSTRAÇÃO DE AR-CONDICIONADO */
     .hero-header {
       background: linear-gradient(160deg, #07131a 0%, #0f3446 60%, #134e63 100%);
       padding: 20px 18px 24px 18px;
@@ -101,7 +100,6 @@
       width: 145px;
     }
 
-    /* CONTAINER E CARDS */
     .container {
       max-width: 650px;
       margin: 16px auto;
@@ -132,6 +130,19 @@
       align-items: center;
       border-bottom: 1px solid var(--borda);
       padding-bottom: 10px;
+    }
+
+    .banner-edicao {
+      display: none;
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: #fcd34d;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 12px;
+      margin-bottom: 12px;
+      justify-content: space-between;
+      align-items: center;
     }
 
     label {
@@ -217,6 +228,12 @@
       border: 1px dashed var(--turquesa);
     }
 
+    .btn-editar {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fcd34d;
+      border: 1px solid rgba(245, 158, 11, 0.4);
+    }
+
     .btn-whatsapp {
       background: #22c55e;
       color: #ffffff;
@@ -253,7 +270,6 @@
       color: var(--ciano);
     }
 
-    /* CARDS DE ALERTA E HISTÓRICO */
     .item-registro {
       background: var(--bg-card);
       border-radius: 14px;
@@ -280,7 +296,6 @@
     .tag-emdia { background: rgba(0, 212, 255, 0.15); color: var(--ciano); }
     .tag-concluido { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; }
 
-    /* MENU INFERIOR */
     .bottom-nav {
       position: fixed;
       bottom: 0; left: 0; right: 0;
@@ -327,7 +342,6 @@
 </head>
 <body>
 
-  <!-- TOPO ILUSTRADO COM APARELHO SPLIT & FLUXO DE AR GELADO -->
   <div class="hero-header">
     <div class="hero-top">
       <div class="brand-tag">❄️ CLIMATIZAÇÃO & REFRIGERAÇÃO</div>
@@ -337,10 +351,9 @@
     <div class="hero-content">
       <div class="hero-text">
         <h1>Souza Ar & Refrigeração</h1>
-        <p>Propostas técnicas, histórico de equipamentos e controle preventivo.</p>
+        <p>Propostas técnicas, edição rápida e controle preventivo.</p>
       </div>
 
-      <!-- Ilustração Vetorial de Unidade Evaporadora Split -->
       <div class="hero-ac-art">
         <svg viewBox="0 0 220 125" width="100%" height="auto">
           <defs>
@@ -353,21 +366,14 @@
               <stop offset="100%" stop-color="#00d4ff" stop-opacity="0"/>
             </linearGradient>
           </defs>
-          <!-- Feixe de ar gelado -->
           <polygon points="32,76 188,76 205,122 15,122" fill="url(#coldAir)"/>
-          <!-- Corpo do Ar Condicionado Split -->
           <rect x="14" y="14" width="192" height="62" rx="12" fill="url(#acBody)" stroke="#94a3b8" stroke-width="1.5"/>
-          <!-- Detalhe frontal / Friso -->
           <line x1="22" y1="54" x2="198" y2="54" stroke="#94a3b8" stroke-width="1.2"/>
-          <!-- Visor Digital de Temperatura -->
           <rect x="155" y="28" width="34" height="16" rx="4" fill="#091e28"/>
           <text x="172" y="40" text-anchor="middle" font-size="10" font-weight="bold" fill="#00d4ff" font-family="monospace">18°C</text>
-          <!-- LEDs indicadores -->
-          <circle cx="34" cy="36" r="3" fill="#10b981"/>
-          <circle cx="44" cy="36" r="3" fill="#00d4ff"/>
-          <!-- Aleta de saída de ar -->
+          <circle cx="34" cy="36" r="3.5" fill="#10b981"/>
+          <circle cx="44" cy="36" r="3.5" fill="#00d4ff"/>
           <rect x="28" y="62" width="164" height="8" rx="3" fill="#334155"/>
-          <!-- Ondas de vento frio -->
           <path d="M55 82 Q48 96 55 110" fill="none" stroke="#bae6fd" stroke-width="2.5" stroke-linecap="round"/>
           <path d="M90 82 Q83 96 90 110" fill="none" stroke="#bae6fd" stroke-width="2.5" stroke-linecap="round"/>
           <path d="M125 82 Q118 96 125 110" fill="none" stroke="#bae6fd" stroke-width="2.5" stroke-linecap="round"/>
@@ -379,11 +385,16 @@
 
   <div class="container">
 
-    <!-- ABA 1: NOVO ORÇAMENTO / SERVIÇO -->
+    <!-- ABA 1: NOVO ORÇAMENTO / EDIÇÃO -->
     <div id="aba-novo" class="aba ativa">
       <div id="form-container" class="card">
         <div class="card-titulo">
-          <span>📋 Dados do Atendimento</span>
+          <span id="titulo-form">📋 Novo Orçamento</span>
+        </div>
+
+        <div id="banner-edicao" class="banner-edicao">
+          <span>✏️ Editando orçamento salvo</span>
+          <button type="button" class="btn btn-editar btn-pequeno" onclick="cancelarEdicao()">Cancelar Edição</button>
         </div>
 
         <label>Nome do Cliente *</label>
@@ -429,23 +440,24 @@
           </div>
         </div>
 
-        <button class="btn btn-secundario" onclick="adicionarLinha()">+ Adicionar Serviço ou Peça</button>
+        <button class="btn btn-secundario" onclick="adicionarLinha()">+ Acrescentar Serviço ou Peça</button>
 
         <div class="box-total-app">
           <span>Valor Total do Orçamento</span>
           <span id="total-vivo">R$ 0,00</span>
         </div>
 
-        <button id="btnGerar" class="btn btn-primario" onclick="salvarEGerar()">❄️ GERAR PROPOSTA & REGISTRAR</button>
+        <button id="btnGerar" class="btn btn-primario" onclick="salvarEGerar()">❄️ GERAR PROPOSTA & SALVAR</button>
       </div>
 
-      <!-- TELA DE SUCESSO -->
+      <!-- TELA DE SUCESSO COM ENVIO DIRETO NO WHATSAPP E OPÇÃO DE EDITAR -->
       <div id="sucesso-container" class="card" style="display:none; text-align:center;">
-        <h3 style="color:#34d399; font-size:18px;">✅ Proposta Gerada e Salva!</h3>
-        <p style="font-size:12px; color:var(--texto-secundario); margin-top:4px;">Histórico atualizado e lembrete preventivo agendado.</p>
+        <h3 style="color:#34d399; font-size:18px;">✅ Proposta Pronta!</h3>
+        <p style="font-size:12px; color:var(--texto-secundario); margin-top:4px;">Envie a imagem pelo WhatsApp ou volte para ajustar algum valor.</p>
         <img id="preview-img" alt="Orçamento">
-        <button class="btn btn-whatsapp" onclick="compartilharOrcamento()">📲 ENVIAR NO WHATSAPP</button>
-        <button class="btn btn-secundario" onclick="resetarFormulario()">+ Novo Atendimento</button>
+        <button class="btn btn-whatsapp" onclick="compartilharOrcamento()">📲 ENVIAR PROPOSTA VIA WHATSAPP</button>
+        <button class="btn btn-editar" onclick="voltarParaEdicaoAtual()">✏️ Editar este Orçamento</button>
+        <button class="btn btn-secundario" onclick="resetarFormulario()">+ Novo Orçamento</button>
       </div>
     </div>
 
@@ -463,11 +475,11 @@
       </div>
     </div>
 
-    <!-- ABA 3: HISTÓRICO COMPLETO -->
+    <!-- ABA 3: HISTÓRICO COMPLETO (COM BOTÃO DE EDITAR) -->
     <div id="aba-historico" class="aba">
       <div class="card">
         <div class="card-titulo">
-          <span>📂 Histórico de Clientes</span>
+          <span>📂 Histórico & Edição</span>
           <button class="btn btn-secundario btn-pequeno" onclick="carregarDadosNuvem()">Sincronizar</button>
         </div>
         <input type="text" id="busca-historico" placeholder="🔍 Filtrar por cliente, aparelho ou serviço..." oninput="filtrarHistorico()">
@@ -477,21 +489,19 @@
 
   </div>
 
-  <!-- ÁREA OCULTA PARA RENDERIZAR A IMAGEM DO ORÇAMENTO -->
   <div id="area-render"></div>
 
-  <!-- MENU INFERIOR -->
   <div class="bottom-nav">
-    <button class="nav-btn ativo" onclick="mudarAba('novo', this)">
+    <button id="nav-novo" class="nav-btn ativo" onclick="mudarAba('novo', this)">
       <span class="nav-icon">❄️</span>
       <span>Orçamento</span>
     </button>
-    <button class="nav-btn" onclick="mudarAba('alertas', this)">
+    <button id="nav-alertas" class="nav-btn" onclick="mudarAba('alertas', this)">
       <span class="nav-icon">🔔</span>
       <span id="badge-alertas" class="contador-alerta" style="display:none;">0</span>
       <span>Alertas 6M</span>
     </button>
-    <button class="nav-btn" onclick="mudarAba('historico', this)">
+    <button id="nav-historico" class="nav-btn" onclick="mudarAba('historico', this)">
       <span class="nav-icon">📂</span>
       <span>Histórico</span>
     </button>
@@ -504,32 +514,34 @@
   let filaOffline = JSON.parse(localStorage.getItem("souza_fila_offline") || "[]");
   let arquivoImagemGlobal = null;
   let urlBlobGlobal = null;
+  let idEmEdicao = null;
 
   function moeda(v) {
     return "R$ " + Number(v || 0).toFixed(2).replace(".", ",");
   }
 
   function escaparHtml(t) {
-    return String(t || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    return String(t || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   }
 
   function mudarAba(nome, btn) {
     document.querySelectorAll(".aba").forEach(a => a.classList.remove("ativa"));
     document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("ativo"));
     document.getElementById("aba-" + nome).classList.add("ativa");
-    btn.classList.add("ativo");
+    if (btn) btn.classList.add("ativo");
     if (nome !== "novo") renderizarListas();
   }
 
-  function adicionarLinha() {
+  function adicionarLinha(descVal = "", precoVal = "") {
     const div = document.createElement("div");
     div.className = "linha-item";
     div.innerHTML = `
-      <input class="desc" type="text" placeholder="Descrição do serviço/peça">
-      <input class="preco" type="number" step="0.01" inputmode="decimal" placeholder="R$">
+      <input class="desc" type="text" value="${escaparHtml(descVal)}" placeholder="Descrição do serviço/peça">
+      <input class="preco" type="number" step="0.01" inputmode="decimal" value="${precoVal !== "" ? precoVal : ""}" placeholder="R$">
       <button class="btn-del" onclick="removerLinha(this)">✕</button>
     `;
     document.getElementById("container-itens").appendChild(div);
+    atualizarTotal();
   }
 
   function removerLinha(btn) {
@@ -550,6 +562,69 @@
     if (e.target.classList.contains("preco")) atualizarTotal();
   });
 
+  function abrirParaEdicao(id) {
+    const reg = registrosGlobais.find(r => r.id === id);
+    if (!reg) return;
+
+    idEmEdicao = reg.id;
+    document.getElementById("titulo-form").innerText = "✏️ Editando Orçamento";
+    document.getElementById("banner-edicao").style.display = "flex";
+    document.getElementById("cliente").value = reg.cliente || "";
+    document.getElementById("telefone").value = reg.telefone || "";
+    document.getElementById("equipamento").value = reg.equipamento || "";
+    document.getElementById("mesesRetorno").value = reg.mesesRetorno || 6;
+
+    const selectTipo = document.getElementById("tipoServico");
+    for (let i = 0; i < selectTipo.options.length; i++) {
+      if (selectTipo.options[i].value === reg.tipo) {
+        selectTipo.selectedIndex = i;
+        break;
+      }
+    }
+
+    const container = document.getElementById("container-itens");
+    container.innerHTML = "";
+
+    if (reg.itensLista && reg.itensLista.length > 0) {
+      reg.itensLista.forEach(item => adicionarLinha(item.desc, item.preco));
+    } else if (reg.itens) {
+      // Fallback para registros antigos salvos apenas como texto
+      const partes = reg.itens.split(", ");
+      partes.forEach(p => {
+        const match = p.match(/^(.*)\s+\(R\$\s*([\d.,]+)\)$/);
+        if (match) {
+          const valNum = parseFloat(match[2].replace(".", "").replace(",", "."));
+          adicionarLinha(match[1], valNum);
+        } else {
+          adicionarLinha(p, "");
+        }
+      });
+    } else {
+      adicionarLinha();
+    }
+
+    const btn = document.getElementById("btnGerar");
+    btn.innerText = "💾 SALVAR ALTERAÇÕES & GERAR PROPOSTA";
+    btn.disabled = false;
+
+    document.getElementById("sucesso-container").style.display = "none";
+    document.getElementById("form-container").style.display = "block";
+    mudarAba("novo", document.getElementById("nav-novo"));
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function voltarParaEdicaoAtual() {
+    const btn = document.getElementById("btnGerar");
+    btn.innerText = "💾 SALVAR ALTERAÇÕES & GERAR PROPOSTA";
+    btn.disabled = false;
+    document.getElementById("sucesso-container").style.display = "none";
+    document.getElementById("form-container").style.display = "block";
+  }
+
+  function cancelarEdicao() {
+    resetarFormulario();
+  }
+
   async function salvarEGerar() {
     const cliente = document.getElementById("cliente").value.trim();
     const telefone = document.getElementById("telefone").value.trim();
@@ -563,6 +638,7 @@
     const precos = document.querySelectorAll(".preco");
     let linhasHtml = "";
     let resumoTexto = [];
+    let itensEstruturados = [];
     let totalGeral = 0;
     let qtd = 0;
 
@@ -573,6 +649,8 @@
         const p = parseFloat(precos[i].value) || 0;
         totalGeral += p;
         resumoTexto.push(d + " (" + moeda(p) + ")");
+        itensEstruturados.push({ desc: d, preco: p });
+
         const bgLinha = qtd % 2 === 0 ? "#f8fafc" : "#ffffff";
         linhasHtml += `
           <tr style="background:${bgLinha};">
@@ -588,7 +666,7 @@
     if (qtd === 0) { alert("Adicione pelo menos um item."); return; }
 
     const btn = document.getElementById("btnGerar");
-    btn.innerText = "⏳ GERANDO DOCUMENTO...";
+    btn.innerText = "⏳ GERANDO PROPOSTA...";
     btn.disabled = true;
 
     const agora = new Date();
@@ -597,39 +675,48 @@
     dataProxObj.setMonth(dataProxObj.getMonth() + mesesRetorno);
     const dataProxStr = dataProxObj.toLocaleDateString("pt-BR");
 
-    const novoRegistro = {
-      id: "OS-" + Date.now(),
+    const idFinal = idEmEdicao || ("OS-" + Date.now());
+    idEmEdicao = idFinal; // Mantém o ID caso o usuário clique em "Editar este Orçamento" na tela seguinte
+
+    const registroAtualizado = {
+      id: idFinal,
       dataServico: dataHoje,
       cliente: cliente,
       telefone: telefone,
       tipo: tipoServico,
       equipamento: equipamento,
       itens: resumoTexto.join(", "),
+      itensLista: itensEstruturados,
       valor: totalGeral,
       dataProxima: dataProxStr,
       diasRestantes: mesesRetorno * 30,
-      situacao: "EM DIA"
+      situacao: "EM DIA",
+      mesesRetorno: mesesRetorno
     };
 
-    registrosGlobais.unshift(novoRegistro);
+    const idxExistente = registrosGlobais.findIndex(r => r.id === idFinal);
+    if (idxExistente >= 0) {
+      registrosGlobais[idxExistente] = registroAtualizado;
+    } else {
+      registrosGlobais.unshift(registroAtualizado);
+    }
     localStorage.setItem("souza_registros", JSON.stringify(registrosGlobais));
 
     enviarParaNuvem({
       acao: "salvarServico",
+      id: idFinal,
       cliente: cliente,
       telefone: telefone,
       tipoServico: tipoServico,
       equipamento: equipamento,
       resumoItens: resumoTexto.join(", "),
+      itensLista: itensEstruturados,
       valorTotal: totalGeral,
       mesesRetorno: mesesRetorno
     });
 
-    // NOVO LAYOUT DO ORÇAMENTO: CAPA TÉCNICA ESCURA + ILUSTRAÇÃO DE SPLIT + LOGO SOUZA AR
     const htmlDoc = `
       <div style="width:720px; background:#ffffff; font-family:Arial,sans-serif; color:#1e293b; border:1px solid #cbd5e1;">
-        
-        <!-- CABEÇALHO CORPORATIVO ESCURO COM ILUSTRAÇÃO DE AR-CONDICIONADO -->
         <div style="background:linear-gradient(135deg, #091e28 0%, #0f4c5c 100%); padding:30px; color:#ffffff;">
           <table width="100%" style="border-collapse:collapse;">
             <tr>
@@ -644,7 +731,6 @@
                 </div>
               </td>
               <td align="right" style="vertical-align:middle; width:260px;">
-                <!-- Ilustração do Aparelho Split com Fluxo de Ar Gelado -->
                 <svg viewBox="0 0 240 130" width="230" height="125">
                   <defs>
                     <linearGradient id="docAcBody" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -674,7 +760,6 @@
           </table>
         </div>
 
-        <!-- BLOCO DE INFORMAÇÕES DO CLIENTE E EQUIPAMENTO -->
         <div style="padding:26px 30px;">
           <table width="100%" style="border-collapse:collapse; margin-bottom:22px; background:#f1f5f9; border-radius:8px;">
             <tr>
@@ -694,7 +779,6 @@
             </tr>
           </table>
 
-          <!-- TABELA DE SERVIÇOS -->
           <table width="100%" style="border-collapse:collapse; font-size:13px; margin-bottom:22px;">
             <thead>
               <tr style="background:#0f4c5c; color:#ffffff; text-transform:uppercase; font-size:11px;">
@@ -708,7 +792,6 @@
             <tbody>${linhasHtml}</tbody>
           </table>
 
-          <!-- TOTAL -->
           <table width="100%" style="border-collapse:collapse;">
             <tr>
               <td style="width:52%; vertical-align:middle; font-size:11px; color:#64748b; padding-right:15px;">
@@ -721,7 +804,6 @@
             </tr>
           </table>
 
-          <!-- RODAPÉ -->
           <div style="margin-top:28px; border-top:2px solid #e2e8f0; padding-top:14px; font-size:12px; color:#475569;">
             <table width="100%" style="border-collapse:collapse;">
               <tr>
@@ -767,27 +849,29 @@
           text: "Olá! Segue a proposta técnica da Souza Ar & Refrigeração."
         });
         return;
-      } catch (e) {}
+      } catch (e) {
+        if (e.name === "AbortError") return;
+      }
     }
     const a = document.createElement("a");
     a.href = urlBlobGlobal;
     a.download = "Proposta_Souza_Ar.jpg";
     a.click();
+    alert("Imagem salva na galeria! Agora basta anexá-la na conversa do WhatsApp.");
   }
 
   function resetarFormulario() {
+    idEmEdicao = null;
+    document.getElementById("titulo-form").innerText = "📋 Novo Orçamento";
+    document.getElementById("banner-edicao").style.display = "none";
     document.getElementById("cliente").value = "";
     document.getElementById("telefone").value = "";
     document.getElementById("equipamento").value = "";
-    document.getElementById("container-itens").innerHTML = `
-      <div class="linha-item">
-        <input class="desc" type="text" placeholder="Descrição do serviço/peça">
-        <input class="preco" type="number" step="0.01" inputmode="decimal" placeholder="R$">
-        <button class="btn-del" onclick="removerLinha(this)">✕</button>
-      </div>`;
+    document.getElementById("container-itens").innerHTML = "";
+    adicionarLinha();
     atualizarTotal();
     const btn = document.getElementById("btnGerar");
-    btn.innerText = "❄️ GERAR PROPOSTA & REGISTRAR";
+    btn.innerText = "❄️ GERAR PROPOSTA & SALVAR";
     btn.disabled = false;
     document.getElementById("sucesso-container").style.display = "none";
     document.getElementById("form-container").style.display = "block";
@@ -880,7 +964,7 @@
       ) {
         htmlHist += `
           <div class="item-registro">
-            <div style="display:flex; justify-content:space-between;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
               <b style="color:#ffffff;">${escaparHtml(reg.cliente)}</b>
               <b style="color:var(--ciano);">${moeda(reg.valor)}</b>
             </div>
@@ -888,6 +972,9 @@
               📅 <b>${reg.dataServico}</b> • ${escaparHtml(reg.tipo)} (${escaparHtml(reg.equipamento)})<br>
               📝 ${escaparHtml(reg.itens)}<br>
               🔔 Próxima preventiva: <b>${reg.dataProxima}</b>
+            </div>
+            <div style="display:flex; gap:8px; margin-top:10px;">
+              <button class="btn btn-editar btn-pequeno" style="flex:1;" onclick="abrirParaEdicao('${reg.id}')">✏️ Abrir e Editar Orçamento</button>
             </div>
           </div>`;
       }
