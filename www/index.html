@@ -3,190 +3,387 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <meta name="theme-color" content="#0f7c8d">
-  <title>Souza Ar - Gestão & Orçamentos</title>
+  <meta name="theme-color" content="#091e28">
+  <title>Souza Ar - Engenharia & Climatização</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   <style>
     :root {
-      --primaria: #0f7c8d;
-      --secundaria: #1cc7b7;
-      --fundo: #f1f5f9;
-      --texto: #1e293b;
-      --alerta: #dc2626;
-      --aviso: #d97706;
-      --sucesso: #16a34a;
+      --bg-app: #0d1b24;
+      --bg-card: #132633;
+      --bg-input: #0a151c;
+      --borda: #1f3b4d;
+      --ciano: #00d4ff;
+      --turquesa: #19e0d0;
+      --texto-principal: #f1f5f9;
+      --texto-secundario: #94a3b8;
+      --alerta: #ef4444;
+      --aviso: #f59e0b;
+      --sucesso: #10b981;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
 
-    body { background: var(--fundo); color: var(--texto); padding-bottom: 85px; }
+    body {
+      background: var(--bg-app);
+      color: var(--texto-principal);
+      padding-bottom: 90px;
+    }
 
-    .topbar {
-      background: linear-gradient(135deg, var(--primaria), #0b5d6b);
-      color: #fff;
-      padding: 16px 20px;
+    /* BANNER HERO COM ILUSTRAÇÃO DE AR-CONDICIONADO */
+    .hero-header {
+      background: linear-gradient(160deg, #07131a 0%, #0f3446 60%, #134e63 100%);
+      padding: 20px 18px 24px 18px;
+      border-bottom: 1px solid var(--borda);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-top {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      align-items: center;
+      margin-bottom: 14px;
     }
 
-    .topbar-brand { display: flex; align-items: center; gap: 10px; }
-    .topbar h1 { font-size: 18px; font-weight: 700; }
-    .topbar span { font-size: 11px; opacity: 0.85; display: block; }
+    .brand-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 212, 255, 0.12);
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      color: var(--ciano);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
 
     .badge-sync {
       font-size: 11px;
       padding: 4px 10px;
       border-radius: 20px;
-      background: rgba(255,255,255,0.2);
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
       font-weight: 600;
     }
 
-    .container { max-width: 650px; margin: 16px auto; padding: 0 14px; }
+    .hero-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .hero-text h1 {
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: 0.3px;
+    }
+
+    .hero-text p {
+      font-size: 12px;
+      color: #bae6fd;
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+
+    .hero-ac-art {
+      flex-shrink: 0;
+      width: 145px;
+    }
+
+    /* CONTAINER E CARDS */
+    .container {
+      max-width: 650px;
+      margin: 16px auto;
+      padding: 0 14px;
+    }
+
     .aba { display: none; }
     .aba.ativa { display: block; }
 
     .card {
-      background: #fff;
+      background: var(--bg-card);
       border-radius: 16px;
       padding: 18px;
       margin-bottom: 14px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-      border: 1px solid #e2e8f0;
+      border: 1px solid var(--borda);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
     }
 
     .card-titulo {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 700;
-      color: var(--primaria);
+      color: var(--turquesa);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
       margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--borda);
+      padding-bottom: 10px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--texto-secundario);
+      margin-bottom: 6px;
+      margin-top: 12px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid var(--borda);
+      border-radius: 10px;
+      font-size: 14px;
+      background: var(--bg-input);
+      color: #ffffff;
+      transition: 0.2s;
+    }
+
+    input::placeholder { color: #475569; }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--ciano);
+      box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.15);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .linha-item {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+      align-items: center;
+    }
+
+    .desc { flex: 2.3; }
+    .preco { flex: 1; }
+
+    .btn-del {
+      width: 44px;
+      height: 44px;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 10px;
+      background: rgba(239, 68, 68, 0.12);
+      color: #f87171;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      letter-spacing: 0.4px;
+    }
+
+    .btn-primario {
+      background: linear-gradient(135deg, #0ea5e9, #00d4ff);
+      color: #05161f;
+      box-shadow: 0 6px 20px rgba(0, 212, 255, 0.25);
+    }
+
+    .btn-secundario {
+      background: rgba(25, 224, 208, 0.1);
+      color: var(--turquesa);
+      border: 1px dashed var(--turquesa);
+    }
+
+    .btn-whatsapp {
+      background: #22c55e;
+      color: #ffffff;
+      box-shadow: 0 6px 20px rgba(34, 197, 94, 0.25);
+    }
+
+    .btn-pequeno {
+      padding: 8px 12px;
+      font-size: 12px;
+      border-radius: 8px;
+      width: auto;
+      margin-top: 0;
+    }
+
+    .box-total-app {
+      margin-top: 16px;
+      padding: 14px 16px;
+      background: var(--bg-input);
+      border: 1px solid var(--borda);
+      border-radius: 12px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
-    label { display: block; font-size: 12px; font-weight: 700; color: #475569; margin-bottom: 5px; margin-top: 10px; }
-
-    input, select {
-      width: 100%;
-      padding: 12px;
-      border: 1.5px solid #cbd5e1;
-      border-radius: 10px;
-      font-size: 14px;
-      background: #f8fafc;
+    .box-total-app span:first-child {
+      font-size: 13px;
+      color: var(--texto-secundario);
     }
 
-    input:focus, select:focus { outline: none; border-color: var(--primaria); background: #fff; }
-
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-
-    .linha-item { display: flex; gap: 8px; margin-top: 8px; align-items: center; }
-    .desc { flex: 2.3; }
-    .preco { flex: 1; }
-
-    .btn-del {
-      width: 42px; height: 42px; border: none; border-radius: 10px;
-      background: #fee2e2; color: var(--alerta); font-weight: bold; cursor: pointer;
+    .box-total-app span:last-child {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--ciano);
     }
 
-    .btn {
-      width: 100%; padding: 14px; border: none; border-radius: 12px;
-      font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 12px;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-    }
-
-    .btn-primario { background: var(--primaria); color: #fff; }
-    .btn-secundario { background: #e6f4f1; color: var(--primaria); border: 1.5px dashed var(--primaria); }
-    .btn-whatsapp { background: #25D366; color: #fff; }
-    .btn-pequeno { padding: 8px 12px; font-size: 12px; border-radius: 8px; width: auto; margin-top: 0; }
-
+    /* CARDS DE ALERTA E HISTÓRICO */
     .item-registro {
-      background: #fff;
+      background: var(--bg-card);
       border-radius: 14px;
-      padding: 15px;
+      padding: 16px;
       margin-bottom: 12px;
-      border-left: 5px solid var(--primaria);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      border: 1px solid var(--borda);
+      border-left: 5px solid var(--ciano);
     }
 
     .item-registro.atrasado { border-left-color: var(--alerta); }
     .item-registro.proximo { border-left-color: var(--aviso); }
-    .item-registro.concluido { border-left-color: var(--sucesso); opacity: 0.75; }
+    .item-registro.concluido { border-left-color: var(--sucesso); opacity: 0.7; }
 
     .tag-status {
-      font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 6px;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 4px 8px;
+      border-radius: 6px;
       text-transform: uppercase;
     }
-    .tag-atrasado { background: #fee2e2; color: var(--alerta); }
-    .tag-proximo { background: #fef3c7; color: var(--aviso); }
-    .tag-emdia { background: #e0f2fe; color: #0284c7; }
-    .tag-concluido { background: #dcfce7; color: var(--sucesso); }
 
+    .tag-atrasado { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
+    .tag-proximo { background: rgba(245, 158, 11, 0.2); color: #fcd34d; }
+    .tag-emdia { background: rgba(0, 212, 255, 0.15); color: var(--ciano); }
+    .tag-concluido { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; }
+
+    /* MENU INFERIOR */
     .bottom-nav {
       position: fixed;
       bottom: 0; left: 0; right: 0;
-      background: #fff;
+      background: #09151c;
       display: flex;
-      border-top: 1px solid #e2e8f0;
-      padding: 8px 0;
+      border-top: 1px solid var(--borda);
+      padding: 10px 0;
       z-index: 100;
-      box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
     }
 
     .nav-btn {
-      flex: 1; background: none; border: none; color: #64748b;
-      font-size: 11px; font-weight: 600; display: flex; flex-direction: column;
-      align-items: center; gap: 4px; cursor: pointer; position: relative;
+      flex: 1;
+      background: none;
+      border: none;
+      color: #64748b;
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      position: relative;
     }
 
-    .nav-btn.ativo { color: var(--primaria); font-weight: 700; }
+    .nav-btn.ativo { color: var(--ciano); font-weight: 700; }
     .nav-icon { font-size: 20px; }
 
     .contador-alerta {
-      position: absolute; top: -2px; right: 28%;
-      background: var(--alerta); color: #fff; font-size: 10px;
-      padding: 1px 6px; border-radius: 10px; font-weight: bold;
+      position: absolute;
+      top: -2px;
+      right: 28%;
+      background: var(--alerta);
+      color: #fff;
+      font-size: 10px;
+      padding: 1px 6px;
+      border-radius: 10px;
+      font-weight: bold;
     }
 
     #area-render { position: fixed; left: -99999px; top: 0; background: #fff; }
-    #preview-img { width: 100%; border-radius: 12px; border: 1px solid #cbd5e1; margin-top: 10px; }
+    #preview-img { width: 100%; border-radius: 12px; border: 1px solid var(--borda); margin-top: 12px; }
   </style>
 </head>
 <body>
 
-  <div class="topbar">
-    <div class="topbar-brand">
-      <svg width="34" height="34" viewBox="0 0 300 300" style="overflow:visible;">
-        <g fill="#ffffff">
-          <rect x="130" y="0" width="40" height="55" rx="8"/>
-          <rect x="130" y="245" width="40" height="55" rx="8"/>
-          <rect x="0" y="130" width="55" height="40" rx="8"/>
-          <rect x="245" y="130" width="55" height="40" rx="8"/>
-          <g transform="rotate(45 150 150)"><rect x="130" y="0" width="40" height="55" rx="8"/><rect x="130" y="245" width="40" height="55" rx="8"/></g>
-          <g transform="rotate(-45 150 150)"><rect x="130" y="0" width="40" height="55" rx="8"/><rect x="130" y="245" width="40" height="55" rx="8"/></g>
-        </g>
-        <circle cx="150" cy="150" r="90" fill="none" stroke="#ffffff" stroke-width="40"/>
-        <text x="150" y="182" text-anchor="middle" font-size="105" fill="#ffffff">❄</text>
-      </svg>
-      <div>
+  <!-- TOPO ILUSTRADO COM APARELHO SPLIT & FLUXO DE AR GELADO -->
+  <div class="hero-header">
+    <div class="hero-top">
+      <div class="brand-tag">❄️ CLIMATIZAÇÃO & REFRIGERAÇÃO</div>
+      <div id="status-rede" class="badge-sync">● Online</div>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-text">
         <h1>Souza Ar & Refrigeração</h1>
-        <span>Gestão de Serviços & Preventivas</span>
+        <p>Propostas técnicas, histórico de equipamentos e controle preventivo.</p>
+      </div>
+
+      <!-- Ilustração Vetorial de Unidade Evaporadora Split -->
+      <div class="hero-ac-art">
+        <svg viewBox="0 0 220 125" width="100%" height="auto">
+          <defs>
+            <linearGradient id="acBody" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#ffffff"/>
+              <stop offset="100%" stop-color="#cbd5e1"/>
+            </linearGradient>
+            <linearGradient id="coldAir" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#00d4ff" stop-opacity="0.7"/>
+              <stop offset="100%" stop-color="#00d4ff" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <!-- Feixe de ar gelado -->
+          <polygon points="32,76 188,76 205,122 15,122" fill="url(#coldAir)"/>
+          <!-- Corpo do Ar Condicionado Split -->
+          <rect x="14" y="14" width="192" height="62" rx="12" fill="url(#acBody)" stroke="#94a3b8" stroke-width="1.5"/>
+          <!-- Detalhe frontal / Friso -->
+          <line x1="22" y1="54" x2="198" y2="54" stroke="#94a3b8" stroke-width="1.2"/>
+          <!-- Visor Digital de Temperatura -->
+          <rect x="155" y="28" width="34" height="16" rx="4" fill="#091e28"/>
+          <text x="172" y="40" text-anchor="middle" font-size="10" font-weight="bold" fill="#00d4ff" font-family="monospace">18°C</text>
+          <!-- LEDs indicadores -->
+          <circle cx="34" cy="36" r="3" fill="#10b981"/>
+          <circle cx="44" cy="36" r="3" fill="#00d4ff"/>
+          <!-- Aleta de saída de ar -->
+          <rect x="28" y="62" width="164" height="8" rx="3" fill="#334155"/>
+          <!-- Ondas de vento frio -->
+          <path d="M55 82 Q48 96 55 110" fill="none" stroke="#bae6fd" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M90 82 Q83 96 90 110" fill="none" stroke="#bae6fd" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M125 82 Q118 96 125 110" fill="none" stroke="#bae6fd" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M160 82 Q153 96 160 110" fill="none" stroke="#bae6fd" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
       </div>
     </div>
-    <div id="status-rede" class="badge-sync">Online</div>
   </div>
 
   <div class="container">
 
+    <!-- ABA 1: NOVO ORÇAMENTO / SERVIÇO -->
     <div id="aba-novo" class="aba ativa">
       <div id="form-container" class="card">
         <div class="card-titulo">
-          <span>📋 Novo Atendimento / Orçamento</span>
+          <span>📋 Dados do Atendimento</span>
         </div>
 
         <label>Nome do Cliente *</label>
@@ -198,91 +395,96 @@
             <input type="tel" id="telefone" placeholder="(99) 99999-9999">
           </div>
           <div>
-            <label>Lembrete Manutenção</label>
+            <label>Alerta Preventivo</label>
             <select id="mesesRetorno">
-              <option value="6" selected>Daqui a 6 meses (Padrão)</option>
-              <option value="3">Daqui a 3 meses (Comercial)</option>
-              <option value="12">Daqui a 12 meses (Anual)</option>
+              <option value="6" selected>6 meses (Residencial)</option>
+              <option value="3">3 meses (Comercial)</option>
+              <option value="12">12 meses (Anual)</option>
             </select>
           </div>
         </div>
 
         <div class="grid-2">
           <div>
-            <label>Tipo de Serviço</label>
+            <label>Especialidade</label>
             <select id="tipoServico">
-              <option value="Instalação Ar Condicionado">Instalação</option>
+              <option value="Instalação de Ar Condicionado">Instalação Split</option>
               <option value="Manutenção Preventiva">Manutenção Preventiva</option>
               <option value="Limpeza e Higienização">Limpeza e Higienização</option>
               <option value="Diagnóstico e Reparo">Diagnóstico e Reparo</option>
             </select>
           </div>
           <div>
-            <label>Equipamento / BTUs</label>
-            <input type="text" id="equipamento" placeholder="Ex: Split 12.000 BTUs">
+            <label>Equipamento / Capacidade</label>
+            <input type="text" id="equipamento" placeholder="Ex: Split Inverter 12.000 BTUs">
           </div>
         </div>
 
-        <label>Itens / Peças / Mão de Obra *</label>
+        <label>Serviços Executados / Peças *</label>
         <div id="container-itens">
           <div class="linha-item">
-            <input class="desc" type="text" placeholder="Ex: Instalação completa com suporte">
+            <input class="desc" type="text" placeholder="Ex: Instalação completa + suporte">
             <input class="preco" type="number" step="0.01" inputmode="decimal" placeholder="R$">
             <button class="btn-del" onclick="removerLinha(this)">✕</button>
           </div>
         </div>
 
-        <button class="btn btn-secundario" onclick="adicionarLinha()">+ Adicionar Item</button>
+        <button class="btn btn-secundario" onclick="adicionarLinha()">+ Adicionar Serviço ou Peça</button>
 
-        <div style="margin-top:16px; padding:12px; background:#f8fafc; border-radius:10px; display:flex; justify-content:space-between; font-weight:bold; color:var(--primaria);">
-          <span>Valor Total:</span>
+        <div class="box-total-app">
+          <span>Valor Total do Orçamento</span>
           <span id="total-vivo">R$ 0,00</span>
         </div>
 
-        <button id="btnGerar" class="btn btn-primario" onclick="salvarEGerar()">🚀 GERAR ORÇAMENTO & SALVAR HISTÓRICO</button>
+        <button id="btnGerar" class="btn btn-primario" onclick="salvarEGerar()">❄️ GERAR PROPOSTA & REGISTRAR</button>
       </div>
 
+      <!-- TELA DE SUCESSO -->
       <div id="sucesso-container" class="card" style="display:none; text-align:center;">
-        <h3 style="color:var(--sucesso);">✅ Registrado no Histórico!</h3>
-        <p style="font-size:12px; color:#64748b; margin-top:4px;">Alerta preventivo agendado automaticamente.</p>
+        <h3 style="color:#34d399; font-size:18px;">✅ Proposta Gerada e Salva!</h3>
+        <p style="font-size:12px; color:var(--texto-secundario); margin-top:4px;">Histórico atualizado e lembrete preventivo agendado.</p>
         <img id="preview-img" alt="Orçamento">
-        <button class="btn btn-whatsapp" onclick="compartilharOrcamento()">📲 ENVIAR ORÇAMENTO NO WHATSAPP</button>
+        <button class="btn btn-whatsapp" onclick="compartilharOrcamento()">📲 ENVIAR NO WHATSAPP</button>
         <button class="btn btn-secundario" onclick="resetarFormulario()">+ Novo Atendimento</button>
       </div>
     </div>
 
+    <!-- ABA 2: ALERTAS DE MANUTENÇÃO -->
     <div id="aba-alertas" class="aba">
       <div class="card">
         <div class="card-titulo">
-          <span>🔔 Clientes para Revisão (6 Meses)</span>
+          <span>🔔 Revisões Preventivas</span>
           <button class="btn btn-secundario btn-pequeno" onclick="carregarDadosNuvem()">Atualizar</button>
         </div>
-        <p style="font-size:12px; color:#64748b; margin-bottom:12px;">
-          Clientes que fizeram instalação ou limpeza e estão próximos ou passaram do prazo de manutenção preventiva.
+        <p style="font-size:12px; color:var(--texto-secundario); margin-bottom:14px;">
+          Clientes que completaram o ciclo recomendado para higienização e manutenção preventiva.
         </p>
         <div id="lista-alertas">Carregando alertas...</div>
       </div>
     </div>
 
+    <!-- ABA 3: HISTÓRICO COMPLETO -->
     <div id="aba-historico" class="aba">
       <div class="card">
         <div class="card-titulo">
-          <span>📂 Histórico de Serviços</span>
+          <span>📂 Histórico de Clientes</span>
           <button class="btn btn-secundario btn-pequeno" onclick="carregarDadosNuvem()">Sincronizar</button>
         </div>
-        <input type="text" id="busca-historico" placeholder="🔍 Buscar por cliente, aparelho ou serviço..." oninput="filtrarHistorico()">
+        <input type="text" id="busca-historico" placeholder="🔍 Filtrar por cliente, aparelho ou serviço..." oninput="filtrarHistorico()">
       </div>
       <div id="lista-historico">Carregando histórico...</div>
     </div>
 
   </div>
 
+  <!-- ÁREA OCULTA PARA RENDERIZAR A IMAGEM DO ORÇAMENTO -->
   <div id="area-render"></div>
 
+  <!-- MENU INFERIOR -->
   <div class="bottom-nav">
     <button class="nav-btn ativo" onclick="mudarAba('novo', this)">
-      <span class="nav-icon">📝</span>
-      <span>Novo Serviço</span>
+      <span class="nav-icon">❄️</span>
+      <span>Orçamento</span>
     </button>
     <button class="nav-btn" onclick="mudarAba('alertas', this)">
       <span class="nav-icon">🔔</span>
@@ -352,7 +554,7 @@
     const cliente = document.getElementById("cliente").value.trim();
     const telefone = document.getElementById("telefone").value.trim();
     const tipoServico = document.getElementById("tipoServico").value;
-    const equipamento = document.getElementById("equipamento").value.trim() || "Não especificado";
+    const equipamento = document.getElementById("equipamento").value.trim() || "Climatizador Split";
     const mesesRetorno = parseInt(document.getElementById("mesesRetorno").value);
 
     if (!cliente) { alert("Informe o nome do cliente."); return; }
@@ -371,13 +573,14 @@
         const p = parseFloat(precos[i].value) || 0;
         totalGeral += p;
         resumoTexto.push(d + " (" + moeda(p) + ")");
+        const bgLinha = qtd % 2 === 0 ? "#f8fafc" : "#ffffff";
         linhasHtml += `
-          <tr>
-            <td style="border:1px solid #ddd; padding:10px; text-align:center;">${qtd}</td>
-            <td style="border:1px solid #ddd; padding:10px;">${escaparHtml(d)}</td>
-            <td style="border:1px solid #ddd; padding:10px; text-align:center;">${moeda(p)}</td>
-            <td style="border:1px solid #ddd; padding:10px; text-align:center;">1</td>
-            <td style="border:1px solid #ddd; padding:10px; text-align:center; font-weight:bold;">${moeda(p)}</td>
+          <tr style="background:${bgLinha};">
+            <td style="padding:12px 10px; border-bottom:1px solid #e2e8f0; text-align:center; color:#64748b; font-weight:bold;">${qtd}</td>
+            <td style="padding:12px 10px; border-bottom:1px solid #e2e8f0; color:#1e293b;">${escaparHtml(d)}</td>
+            <td style="padding:12px 10px; border-bottom:1px solid #e2e8f0; text-align:center; color:#475569;">${moeda(p)}</td>
+            <td style="padding:12px 10px; border-bottom:1px solid #e2e8f0; text-align:center; color:#475569;">1</td>
+            <td style="padding:12px 10px; border-bottom:1px solid #e2e8f0; text-align:right; font-weight:bold; color:#0f7c8d;">${moeda(p)}</td>
           </tr>`;
       }
     }
@@ -385,7 +588,7 @@
     if (qtd === 0) { alert("Adicione pelo menos um item."); return; }
 
     const btn = document.getElementById("btnGerar");
-    btn.innerText = "⏳ SALVANDO E GERANDO...";
+    btn.innerText = "⏳ GERANDO DOCUMENTO...";
     btn.disabled = true;
 
     const agora = new Date();
@@ -411,7 +614,7 @@
     registrosGlobais.unshift(novoRegistro);
     localStorage.setItem("souza_registros", JSON.stringify(registrosGlobais));
 
-    const payloadNuvem = {
+    enviarParaNuvem({
       acao: "salvarServico",
       cliente: cliente,
       telefone: telefone,
@@ -420,80 +623,118 @@
       resumoItens: resumoTexto.join(", "),
       valorTotal: totalGeral,
       mesesRetorno: mesesRetorno
-    };
+    });
 
-    enviarParaNuvem(payloadNuvem);
-
-    const logoSvg = `
-      <div style="display:flex; align-items:center; gap:18px; font-family:Georgia,serif;">
-        <svg width="115" height="115" viewBox="0 0 300 300" style="overflow:visible;">
-          <defs>
-            <linearGradient id="gradDoc" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#19E0D0"/><stop offset="100%" stop-color="#007A74"/>
-            </linearGradient>
-          </defs>
-          <g fill="url(#gradDoc)">
-            <rect x="130" y="0" width="40" height="55" rx="8"/><rect x="130" y="245" width="40" height="55" rx="8"/>
-            <rect x="0" y="130" width="55" height="40" rx="8"/><rect x="245" y="130" width="55" height="40" rx="8"/>
-            <g transform="rotate(45 150 150)"><rect x="130" y="0" width="40" height="55" rx="8"/><rect x="130" y="245" width="40" height="55" rx="8"/></g>
-            <g transform="rotate(-45 150 150)"><rect x="130" y="0" width="40" height="55" rx="8"/><rect x="130" y="245" width="40" height="55" rx="8"/></g>
-          </g>
-          <circle cx="150" cy="150" r="90" fill="none" stroke="url(#gradDoc)" stroke-width="40"/>
-          <text x="150" y="180" text-anchor="middle" font-size="100" fill="#0F6D7E">❄</text>
-        </svg>
-        <div>
-          <div style="color:#0f7c8d; font-size:38px; font-weight:700; line-height:0.9; letter-spacing:2px;">SOUZA</div>
-          <div style="color:#0f7c8d; font-size:12px; font-weight:600; letter-spacing:1px; margin-top:3px;">AR & REFRIGERAÇÃO</div>
-          <div style="margin-top:5px; height:55px;">
-            <svg width="100" height="58" viewBox="0 0 220 120" style="overflow:visible;">
-              <rect x="40" y="20" width="170" height="65" rx="12" fill="none" stroke="#0F7C8D" stroke-width="6"/>
-              <rect x="90" y="18" width="70" height="15" rx="5" fill="none" stroke="#0F7C8D" stroke-width="6"/>
-              <rect x="55" y="48" width="25" height="15" fill="none" stroke="#0F7C8D" stroke-width="5"/>
-              <circle cx="175" cy="55" r="4" fill="#0F7C8D"/><circle cx="190" cy="55" r="4" fill="#0F7C8D"/>
-              <path d="M90 95 C80 110 100 120 90 135" fill="none" stroke="#0F7C8D" stroke-width="6" stroke-linecap="round"/>
-              <path d="M125 95 C115 110 135 120 125 135" fill="none" stroke="#0F7C8D" stroke-width="6" stroke-linecap="round"/>
-              <path d="M160 95 C150 110 170 120 160 135" fill="none" stroke="#0F7C8D" stroke-width="6" stroke-linecap="round"/>
-            </svg>
-          </div>
-        </div>
-      </div>`;
-
+    // NOVO LAYOUT DO ORÇAMENTO: CAPA TÉCNICA ESCURA + ILUSTRAÇÃO DE SPLIT + LOGO SOUZA AR
     const htmlDoc = `
-      <div style="width:700px; background:#fff; font-family:Arial,sans-serif; color:#333; border:1px solid #e1e8ed;">
-        <div style="padding:28px 25px; border-bottom:3px solid #0f7c8d;">
+      <div style="width:720px; background:#ffffff; font-family:Arial,sans-serif; color:#1e293b; border:1px solid #cbd5e1;">
+        
+        <!-- CABEÇALHO CORPORATIVO ESCURO COM ILUSTRAÇÃO DE AR-CONDICIONADO -->
+        <div style="background:linear-gradient(135deg, #091e28 0%, #0f4c5c 100%); padding:30px; color:#ffffff;">
           <table width="100%" style="border-collapse:collapse;">
             <tr>
-              <td>
-                <div style="font-size:38px; font-weight:bold; color:#0f7c8d;">ORÇAMENTO</div>
-                <div style="font-size:13px; color:#555; margin-top:4px;">${escaparHtml(tipoServico)} • ${escaparHtml(equipamento)}</div>
+              <td style="vertical-align:middle;">
+                <div style="display:inline-block; background:rgba(25,224,208,0.18); color:#19e0d0; font-size:11px; font-weight:bold; padding:4px 10px; border-radius:4px; letter-spacing:1px; margin-bottom:8px;">
+                  PROPOSTA TÉCNICA & ORÇAMENTO
+                </div>
+                <div style="font-size:34px; font-weight:800; letter-spacing:1px; line-height:1.1;">SOUZA</div>
+                <div style="font-size:14px; font-weight:700; color:#19e0d0; letter-spacing:2px; margin-top:2px;">AR & REFRIGERAÇÃO</div>
+                <div style="font-size:11px; color:#cbd5e1; margin-top:8px;">
+                  Instalação • Manutenção Preventiva • Higienização • Reparos
+                </div>
               </td>
-              <td align="right" style="width:310px;">${logoSvg}</td>
+              <td align="right" style="vertical-align:middle; width:260px;">
+                <!-- Ilustração do Aparelho Split com Fluxo de Ar Gelado -->
+                <svg viewBox="0 0 240 130" width="230" height="125">
+                  <defs>
+                    <linearGradient id="docAcBody" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stop-color="#ffffff"/>
+                      <stop offset="100%" stop-color="#e2e8f0"/>
+                    </linearGradient>
+                    <linearGradient id="docAir" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stop-color="#19e0d0" stop-opacity="0.65"/>
+                      <stop offset="100%" stop-color="#19e0d0" stop-opacity="0"/>
+                    </linearGradient>
+                  </defs>
+                  <polygon points="28,74 212,74 232,126 8,126" fill="url(#docAir)"/>
+                  <rect x="10" y="10" width="220" height="64" rx="12" fill="url(#docAcBody)"/>
+                  <line x1="18" y1="52" x2="222" y2="52" stroke="#94a3b8" stroke-width="1.5"/>
+                  <rect x="172" y="24" width="38" height="18" rx="4" fill="#091e28"/>
+                  <text x="191" y="37" text-anchor="middle" font-size="11" font-weight="bold" fill="#19e0d0" font-family="monospace">18°C</text>
+                  <circle cx="30" cy="33" r="3.5" fill="#10b981"/>
+                  <circle cx="42" cy="33" r="3.5" fill="#0ea5e9"/>
+                  <rect x="24" y="60" width="192" height="8" rx="3" fill="#1e293b"/>
+                  <path d="M55 82 Q46 98 55 115" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+                  <path d="M98 82 Q89 98 98 115" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+                  <path d="M142 82 Q133 98 142 115" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+                  <path d="M185 82 Q176 98 185 115" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+                </svg>
+              </td>
             </tr>
           </table>
         </div>
-        <div style="padding:25px;">
-          <div style="background:#f8f9fa; border-left:4px solid #0f7c8d; padding:12px; margin-bottom:20px; font-size:13px;">
-            <div>Cliente: <b>${escaparHtml(cliente)}</b></div>
-            <div style="margin-top:4px; color:#555;">Data: <b>${dataHoje}</b> &nbsp;|&nbsp; Próxima Preventiva Recomendada: <b>${dataProxStr}</b></div>
-          </div>
-          <table width="100%" style="border-collapse:collapse; font-size:13px; margin-bottom:20px;">
+
+        <!-- BLOCO DE INFORMAÇÕES DO CLIENTE E EQUIPAMENTO -->
+        <div style="padding:26px 30px;">
+          <table width="100%" style="border-collapse:collapse; margin-bottom:22px; background:#f1f5f9; border-radius:8px;">
+            <tr>
+              <td style="padding:14px 16px; width:55%; border-right:1px solid #cbd5e1;">
+                <div style="font-size:10px; text-transform:uppercase; color:#64748b; font-weight:bold;">Cliente</div>
+                <div style="font-size:16px; font-weight:bold; color:#0f172a; margin-top:2px;">${escaparHtml(cliente)}</div>
+                <div style="font-size:12px; color:#475569; margin-top:4px;">Serviço: <b>${escaparHtml(tipoServico)}</b></div>
+              </td>
+              <td style="padding:14px 16px; width:45%;">
+                <div style="font-size:10px; text-transform:uppercase; color:#64748b; font-weight:bold;">Equipamento & Prazos</div>
+                <div style="font-size:13px; font-weight:bold; color:#0f7c8d; margin-top:2px;">${escaparHtml(equipamento)}</div>
+                <div style="font-size:11px; color:#475569; margin-top:4px;">
+                  Emissão: <b>${dataHoje}</b><br>
+                  Preventiva: <b>${dataProxStr}</b>
+                </div>
+              </td>
+            </tr>
+          </table>
+
+          <!-- TABELA DE SERVIÇOS -->
+          <table width="100%" style="border-collapse:collapse; font-size:13px; margin-bottom:22px;">
             <thead>
-              <tr style="background:#0f7c8d; color:#fff;">
-                <th style="padding:10px;">Nº</th>
-                <th style="padding:10px; text-align:left;">Descrição</th>
-                <th style="padding:10px;">Valor</th>
-                <th style="padding:10px;">Qt.</th>
-                <th style="padding:10px;">Total</th>
+              <tr style="background:#0f4c5c; color:#ffffff; text-transform:uppercase; font-size:11px;">
+                <th style="padding:12px 10px; width:8%;">Item</th>
+                <th style="padding:12px 10px; text-align:left; width:50%;">Descrição dos Serviços / Peças</th>
+                <th style="padding:12px 10px; width:16%;">Unitário</th>
+                <th style="padding:12px 10px; width:8%;">Qt.</th>
+                <th style="padding:12px 10px; text-align:right; width:18%;">Subtotal</th>
               </tr>
             </thead>
             <tbody>${linhasHtml}</tbody>
           </table>
-          <div style="text-align:right; font-size:22px; font-weight:bold; color:#0f7c8d; padding:12px; background:#f4f9fb; border:2px solid #0f7c8d; border-radius:6px;">
-            TOTAL: ${moeda(totalGeral)}
-          </div>
-          <div style="margin-top:30px; border-top:1px solid #ddd; padding-top:15px; font-size:12px; color:#555; line-height:1.7;">
-            <b style="color:#0f7c8d; font-size:14px;">SOUZA AR & REFRIGERAÇÃO</b><br>
-            Contato Técnico (WhatsApp): <b>(99) 98540-4018</b> &nbsp;|&nbsp; Instagram: <b>@souzaar_refrigeracao</b>
+
+          <!-- TOTAL -->
+          <table width="100%" style="border-collapse:collapse;">
+            <tr>
+              <td style="width:52%; vertical-align:middle; font-size:11px; color:#64748b; padding-right:15px;">
+                * Recomendamos higienização preventiva a cada ${mesesRetorno} meses para manter a eficiência energética e a qualidade do ar.
+              </td>
+              <td style="width:48%; background:#091e28; color:#ffffff; padding:16px 20px; border-radius:8px; text-align:right;">
+                <div style="font-size:11px; color:#19e0d0; text-transform:uppercase; letter-spacing:1px;">Investimento Total</div>
+                <div style="font-size:26px; font-weight:800; margin-top:2px;">${moeda(totalGeral)}</div>
+              </td>
+            </tr>
+          </table>
+
+          <!-- RODAPÉ -->
+          <div style="margin-top:28px; border-top:2px solid #e2e8f0; padding-top:14px; font-size:12px; color:#475569;">
+            <table width="100%" style="border-collapse:collapse;">
+              <tr>
+                <td>
+                  <b style="color:#0f4c5c; font-size:13px;">SOUZA AR & REFRIGERAÇÃO</b><br>
+                  Atendimento Técnico Especializado
+                </td>
+                <td align="right" style="line-height:1.6;">
+                  WhatsApp: <b>(99) 98540-4018</b><br>
+                  Instagram: <b>@souzaar_refrigeracao</b>
+                </td>
+              </tr>
+            </table>
           </div>
         </div>
       </div>`;
@@ -503,10 +744,10 @@
 
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        html2canvas(area.firstElementChild, { scale: 2, backgroundColor: "#fff" }).then(canvas => {
+        html2canvas(area.firstElementChild, { scale: 2, backgroundColor: "#ffffff" }).then(canvas => {
           canvas.toBlob(blob => {
             urlBlobGlobal = URL.createObjectURL(blob);
-            arquivoImagemGlobal = new File([blob], "Orcamento_Souza_Ar.jpg", { type: "image/jpeg" });
+            arquivoImagemGlobal = new File([blob], "Proposta_Souza_Ar.jpg", { type: "image/jpeg" });
             document.getElementById("preview-img").src = urlBlobGlobal;
             document.getElementById("form-container").style.display = "none";
             document.getElementById("sucesso-container").style.display = "block";
@@ -522,15 +763,15 @@
       try {
         await navigator.share({
           files: [arquivoImagemGlobal],
-          title: "Orçamento Souza Ar & Refrigeração",
-          text: "Olá! Segue o orçamento da Souza Ar & Refrigeração."
+          title: "Proposta Souza Ar & Refrigeração",
+          text: "Olá! Segue a proposta técnica da Souza Ar & Refrigeração."
         });
         return;
       } catch (e) {}
     }
     const a = document.createElement("a");
     a.href = urlBlobGlobal;
-    a.download = "Orcamento_Souza_Ar.jpg";
+    a.download = "Proposta_Souza_Ar.jpg";
     a.click();
   }
 
@@ -540,13 +781,13 @@
     document.getElementById("equipamento").value = "";
     document.getElementById("container-itens").innerHTML = `
       <div class="linha-item">
-        <input class="desc" type="text" placeholder="Descrição do serviço">
+        <input class="desc" type="text" placeholder="Descrição do serviço/peça">
         <input class="preco" type="number" step="0.01" inputmode="decimal" placeholder="R$">
         <button class="btn-del" onclick="removerLinha(this)">✕</button>
       </div>`;
     atualizarTotal();
     const btn = document.getElementById("btnGerar");
-    btn.innerText = "🚀 GERAR ORÇAMENTO & SALVAR HISTÓRICO";
+    btn.innerText = "❄️ GERAR PROPOSTA & REGISTRAR";
     btn.disabled = false;
     document.getElementById("sucesso-container").style.display = "none";
     document.getElementById("form-container").style.display = "block";
@@ -616,18 +857,18 @@
         htmlAlertas += `
           <div class="item-registro ${classe}">
             <div style="display:flex; justify-content:space-between; align-items:center;">
-              <b>${escaparHtml(reg.cliente)}</b>
+              <b style="color:#ffffff;">${escaparHtml(reg.cliente)}</b>
               <span class="tag-status ${tag}">${reg.situacao}</span>
             </div>
-            <div style="font-size:12px; color:#475569; margin:6px 0;">
-              🔧 ${escaparHtml(reg.tipo)} • ${escaparHtml(reg.equipamento)}<br>
-              📅 Feito em: <b>${reg.dataServico}</b> | Venceu/Vence: <b>${reg.dataProxima}</b>
+            <div style="font-size:12px; color:#cbd5e1; margin:8px 0; line-height:1.5;">
+              ❄️ ${escaparHtml(reg.tipo)} • ${escaparHtml(reg.equipamento)}<br>
+              📅 Feito em: <b>${reg.dataServico}</b> | Revisão: <b>${reg.dataProxima}</b>
             </div>
             <div style="display:flex; gap:8px; margin-top:10px;">
               <a href="https://wa.me/55${numLimpo}?text=${msgZap}" target="_blank" style="flex:2; text-decoration:none;">
                 <button class="btn btn-whatsapp btn-pequeno" style="width:100%;">📲 Lembrar no WhatsApp</button>
               </a>
-              <button class="btn btn-secundario btn-pequeno" style="flex:1;" onclick="concluirAlerta('${reg.id}')">✓ Já Avisei</button>
+              <button class="btn btn-secundario btn-pequeno" style="flex:1;" onclick="concluirAlerta('${reg.id}')">✓ Avisado</button>
             </div>
           </div>`;
       }
@@ -640,10 +881,10 @@
         htmlHist += `
           <div class="item-registro">
             <div style="display:flex; justify-content:space-between;">
-              <b>${escaparHtml(reg.cliente)}</b>
-              <b style="color:var(--primaria);">${moeda(reg.valor)}</b>
+              <b style="color:#ffffff;">${escaparHtml(reg.cliente)}</b>
+              <b style="color:var(--ciano);">${moeda(reg.valor)}</b>
             </div>
-            <div style="font-size:12px; color:#475569; margin-top:5px;">
+            <div style="font-size:12px; color:#cbd5e1; margin-top:6px; line-height:1.5;">
               📅 <b>${reg.dataServico}</b> • ${escaparHtml(reg.tipo)} (${escaparHtml(reg.equipamento)})<br>
               📝 ${escaparHtml(reg.itens)}<br>
               🔔 Próxima preventiva: <b>${reg.dataProxima}</b>
@@ -660,8 +901,8 @@
       badge.style.display = "none";
     }
 
-    divAlertas.innerHTML = htmlAlertas || "<p style='text-align:center; color:#94a3b8; font-size:13px; padding:20px;'>Nenhum cliente com manutenção vencida no momento.</p>";
-    divHist.innerHTML = htmlHist || "<p style='text-align:center; color:#94a3b8; font-size:13px; padding:20px;'>Nenhum registro encontrado.</p>";
+    divAlertas.innerHTML = htmlAlertas || "<p style='text-align:center; color:#64748b; font-size:13px; padding:20px;'>Nenhum cliente com manutenção vencida no momento.</p>";
+    divHist.innerHTML = htmlHist || "<p style='text-align:center; color:#64748b; font-size:13px; padding:20px;'>Nenhum registro encontrado.</p>";
   }
 
   function filtrarHistorico() {
@@ -676,12 +917,16 @@
   }
 
   window.addEventListener("online", () => {
-    document.getElementById("status-rede").innerText = "Online";
+    const badge = document.getElementById("status-rede");
+    badge.innerText = "● Online";
+    badge.style.color = "#34d399";
     carregarDadosNuvem();
   });
 
   window.addEventListener("offline", () => {
-    document.getElementById("status-rede").innerText = "Offline";
+    const badge = document.getElementById("status-rede");
+    badge.innerText = "● Offline";
+    badge.style.color = "#fbbf24";
   });
 
   carregarDadosNuvem();
